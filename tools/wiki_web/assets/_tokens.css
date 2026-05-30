@@ -1,0 +1,67 @@
+/* Color tokens — source-of-truth cho 3 theme (light / dark / paper).
+   Dùng chung cho:
+     - wiki-to-web: @import từ style.css, kích hoạt qua [data-theme="..."]
+     - Obsidian theme my-brain: @import từ theme.css, kích hoạt qua .theme-light/.theme-dark/body.paper
+   Sửa màu ở đây, không sửa nơi khác. */
+
+:root,
+[data-theme="light"],
+.theme-light {
+  --bg: #fbfbfa;
+  --bg-elevated: #ffffff;
+  --bg-subtle: #f3f4f6;
+  --text: #1b1f24;
+  --text-muted: #5f6671;
+  --text-faint: #8a909b;
+  --border: #e6e8ec;
+  --border-strong: #d3d7de;
+  --link: #1f5299;
+  --link-hover: #123a73;
+  --code-bg: #f1f3f6;
+  --accent: #2f6e4a;
+  --accent-soft: rgba(47, 110, 74, 0.1);
+  --header-bg: rgba(251, 251, 250, 0.82);
+  --shadow: 0 1px 2px rgba(20, 24, 31, 0.05);
+}
+
+[data-theme="dark"],
+.theme-dark {
+  --bg: #121419;
+  --bg-elevated: #191c22;
+  --bg-subtle: #20242c;
+  --text: #e7e9ee;
+  --text-muted: #9aa1ad;
+  --text-faint: #717886;
+  --border: #2a2f38;
+  --border-strong: #39404b;
+  --link: #84bcff;
+  --link-hover: #aed5ff;
+  --code-bg: #20242c;
+  --accent: #7fc79a;
+  --accent-soft: rgba(127, 199, 154, 0.14);
+  --header-bg: rgba(18, 20, 25, 0.82);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* Paper: variant "giấy cũ".
+   - Web: kích hoạt qua [data-theme="paper"]
+   - Obsidian: kích hoạt qua body.paper (toggle bằng plugin Style Settings).
+   Đặt sau .theme-dark để body.paper override được cả khi đang ở dark mode. */
+[data-theme="paper"],
+body.paper {
+  --bg: #f1e7d0;
+  --bg-elevated: #f8f1e1;
+  --bg-subtle: #ebdfc4;
+  --text: #322b1c;
+  --text-muted: #6c5f47;
+  --text-faint: #8c7e62;
+  --border: #ddceb0;
+  --border-strong: #cdba97;
+  --link: #3f5630;
+  --link-hover: #2a3a1f;
+  --code-bg: #e9ddc2;
+  --accent: #8a5a2b;
+  --accent-soft: rgba(138, 90, 43, 0.12);
+  --header-bg: rgba(241, 231, 208, 0.85);
+  --shadow: 0 1px 2px rgba(50, 43, 28, 0.08);
+}

@@ -1,0 +1,160 @@
+apiVersion: nvidia.com/v1alpha1
+kind: DynamoGraphDeployment
+metadata:
+  name: lmcache-blend
+  namespace: ai-dept-serving
+  labels:
+    app.kubernetes.io/part-of: dynamo-disagg-lmcache
+    benchmark.kvcache/stack: lmcache-blend
+spec:
+  services:
+    Frontend:
+      componentType: frontend
+      replicas: 1
+      envs:
+        - name: DYN_ROUTER_MODE
+          value: kv
+      resources:
+        requests:
+          cpu: "16"
+          memory: 64Gi
+        limits:
+          cpu: "32"
+          memory: 128Gi
+      extraPodSpec:
+        nodeName: hla9104p1-escn8-smt-hgx47
+        mainContainer:
+          image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.1.1-cuda13
+          command:
+            - python3
+            - -m
+            - dynamo.frontend
+          args:
+            - --http-port
+            - "8000"
+            - --router-mode
+            - kv
+
+    VllmDecodeWorker:
+      envFromSecret: hf-token-secret
+      componentType: worker
+      replicas: 1
+      sharedMemory:
+        size: 64Gi
+      resources:
+        limits:
+          gpu: "1"
+          cpu: "64"
+          memory: 256Gi
+        requests:
+          gpu: "1"
+          cpu: "32"
+          memory: 128Gi
+          custom:
+            ephemeral-storage: 100Gi
+      extraPodSpec:
+        volumes:
+          - name: models
+            hostPath:
+              path: /mnt/models
+              type: Directory
+        nodeName: hla9104p1-escn8-smt-hgx47
+        mainContainer:
+          volumeMounts:
+            - name: models
+              mountPath: /mnt/models
+          image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.1.1-cuda13
+          workingDir: /workspace/examples/backends/vllm
+          command:
+            - bash
+          args:
+            - -c 
+            - |
+              python3 -m dynamo.vllm \
+                --model /mnt/models/hf/Qwen3-0.6B \
+                --disaggregation-mode decode \
+                --kv-transfer-config '{"kv_connector":"NixlConnector","kv_role":"kv_both"}' \
+                --gpu-memory-utilization 0.92 \
+                --no-enable-prefix-caching \
+                --enforce-eager
+
+    VllmPrefillWorker:
+      envFromSecret: hf-token-secret
+      componentType: worker
+      replicas: 1
+      resources:
+        limits:
+          gpu: "1"
+          cpu: "64"
+          memory: 256Gi
+        requests:
+          gpu: "1"
+          cpu: "32"
+          memory: 128Gi
+          custom:
+            ephemeral-storage: 100Gi
+      envs:
+        - name: NODE_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: PYTHONHASHSEED
+          value: "0"
+        - name: LMCACHE_ENABLE_BLENDING
+          value: "True"
+        - name: LMCACHE_BLEND_SPECIAL_STR
+          value: " # # "
+        - name: LMCACHE_USE_LAYERWISE
+          value: "True"
+        - name: LMCACHE_BLEND_CHECK_LAYERS
+          value: "1"
+        - name: LMCACHE_BLEND_RECOMPUTE_RATIOS
+          value: "0.15"
+        - name: LMCACHE_BLEND_MIN_TOKENS
+          value: "256"
+        - name: LMCACHE_CHUNK_SIZE
+          value: "256"
+        - name: LMCACHE_LOG_LEVEL
+          value: INFO
+      extraPodSpec:
+        nodeName: hla9104p1-escn8-smt-hgx47
+        hostIPC: true
+        hostNetwork: true
+        volumes:
+          - name: dev-shm
+            hostPath:
+              path: /dev/shm
+              type: Directory
+          - name: models
+            hostPath: /mnt/models
+            type: Directory
+        affinity:
+          podAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: lmcache-server
+                topologyKey: kubernetes.io/hostname
+        mainContainer:
+          image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.1.1-cuda13
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: dev-shm
+              mountPath: /dev/shm
+            - name: models
+              mountPath: /mnt/models
+          workingDir: /workspace/examples/backends/vllm
+          command:
+            - bash
+          args:
+            - -c
+            - |
+              python3 -m dynamo.vllm \
+                --model /mnt/models/hf/Qwen3-0.6B \
+                --disaggregation-mode prefill \
+                --kv-transfer-config "{\"kv_connector\":\"MultiConnector\",\"kv_role\":\"kv_both\",\"kv_connector_extra_config\":{\"connectors\":[{\"kv_connector\":\"LMCacheMPConnector\",\"kv_role\":\"kv_both\",\"kv_connector_extra_config\":{\"lmcache.mp.host\":\"tcp://${NODE_IP}\",\"lmcache.mp.port\":6555}},{\"kv_connector\":\"NixlConnector\",\"kv_role\":\"kv_both\"}]}}" \
+                --kv-events-config '{"publisher":"zmq","topic":"kv-events","endpoint":"tcp://*:20080","enable_kv_cache_events":true}' \
+                --gpu-memory-utilization "0.92" \
+                --no-enable-prefix-caching \
+                --enforce-eager

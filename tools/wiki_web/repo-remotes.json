@@ -1,0 +1,57 @@
+{
+  "_comment": "Mapping repo-name -> remote info dùng để rewrite link ../references/repos/<name>/... sang URL GitHub/GitLab khi build static site. Cập nhật khi thêm repo mới vào references/repos/.",
+  "gist": {
+    "host": "github",
+    "owner": "magiskboy",
+    "repo": "gist",
+    "branch": "main"
+  },
+  "http-parser": {
+    "host": "github",
+    "owner": "magiskboy",
+    "repo": "http-parser",
+    "branch": "master"
+  },
+  "k8s-obs-module": {
+    "host": "github",
+    "owner": "magiskboy",
+    "repo": "k8s-obs-module",
+    "branch": "main"
+  },
+  "sdl_game": {
+    "host": "gitlab",
+    "owner": "Magiskb0Y",
+    "repo": "sdl_game",
+    "branch": "master"
+  },
+  "teko-kit": {
+    "host": "github",
+    "owner": "magiskboy",
+    "repo": "teko-kit",
+    "branch": "main"
+  },
+  "uasgi": {
+    "host": "github",
+    "owner": "magiskboy",
+    "repo": "uasgi",
+    "branch": "main"
+  },
+  "webrtc-backend": {
+    "host": "gitlab",
+    "owner": "Magiskb0Y",
+    "repo": "webrtc-backend",
+    "branch": "dev"
+  },
+  "wipm-old": {
+    "host": "gitlab",
+    "owner": "Magiskb0Y",
+    "repo": "wipm-old",
+    "branch": "master"
+  },
+  "xthread": {
+    "host": "github",
+    "owner": "magiskboy",
+    "repo": "xthread",
+    "branch": "master"
+  }
+}

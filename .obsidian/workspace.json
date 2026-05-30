@@ -1,0 +1,235 @@
+{
+  "main": {
+    "id": "56a8eedc253d1901",
+    "type": "split",
+    "children": [
+      {
+        "id": "3986873272822ac4",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "053bdfdd64e18301",
+            "type": "leaf",
+            "state": {
+              "type": "excalidraw",
+              "state": {
+                "file": "excalidraw/Kiến trúc hạ tầng AI cơ bản.excalidraw.md"
+              },
+              "icon": "excalidraw-icon",
+              "title": "Kiến trúc hạ tầng AI cơ bản.excalidraw"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "d414fc262af5bafd",
+    "type": "split",
+    "children": [
+      {
+        "id": "21fa724afbda8f30",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "b76bd0c8191284d4",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "fac0464f252d579e",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "9e1aacbd95e03d05",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 276.5
+  },
+  "right": {
+    "id": "8e3af258c5c93c5c",
+    "type": "split",
+    "children": [
+      {
+        "id": "61341bbcff49fe81",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "dd6efc8615df8f67",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks"
+            }
+          },
+          {
+            "id": "b94d72e82d062d1c",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links"
+            }
+          },
+          {
+            "id": "d8721b1cce95d901",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "37a682ac9463864a",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "e542ef961e4a3bbe",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "excalidraw/Kiến trúc hạ tầng AI cơ bản.excalidraw.md",
+                "followCursor": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Kiến trúc hạ tầng AI cơ bản.excalidraw"
+            }
+          },
+          {
+            "id": "92af4cb9a9289112",
+            "type": "leaf",
+            "state": {
+              "type": "claudian-view",
+              "state": {},
+              "icon": "bot",
+              "title": "Claudian"
+            }
+          }
+        ],
+        "currentTab": 5
+      }
+    ],
+    "direction": "horizontal",
+    "width": 422.5
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": true,
+      "command-palette:Open command palette": true,
+      "bases:Create new base": true,
+      "realclaudian:Open Claudian": true,
+      "obsidian-excalidraw-plugin:New drawing": false
+    }
+  },
+  "active": "b76bd0c8191284d4",
+  "lastOpenFiles": [
+    "wiki/DevOps và Infrastructure/Cài đặt operator trên OpenShift air-gapped.md",
+    "excalidraw/Kiến trúc hạ tầng AI cơ bản.excalidraw.md",
+    "excalidraw/Kiến trúc hạ tầng AI cơ bản.excalidraw.md",
+    "_templates/wiki.md",
+    "daily",
+    "AI la gi.md",
+    "Thanh.md",
+    "wiki/Web development/Kurento Protocol.md",
+    "wiki/Web development/Bài toán C10K.md",
+    "wiki/Web development/Arbiter và worker trong ASGI server.md",
+    "notes/2026-05-29.md",
+    "_templates",
+    "AGENTS.md",
+    "wiki/Phát triển bản thân/Hội nhập ecosystem qua interface có sẵn.md",
+    "CLAUDE.md",
+    "excalidraw/Drawing 2026-05-29 21.14.38.excalidraw.md",
+    "notes/Untitled.md",
+    "notes",
+    "Drawing 2026-05-29 21.31.43.excalidraw.md",
+    "web/assets/graph.json",
+    "references/llm-d.ai-Predicted-Latency Based Scheduling for LLMs.pdf",
+    "references/F5 Inference Optimizer.pdf",
+    "wiki/_tags.md",
+    "web/graph/index.html",
+    "web/graph",
+    "web/category/index.html",
+    "web/category",
+    "wiki/_index.md",
+    "wiki/Tổng quan.md",
+    "README.md",
+    "New note.md",
+    "wiki/DevOps và Infrastructure/Kafka làm buffer cho log pipeline.md",
+    "wiki/AI và Machine Learning/Bản chất toán học của trí tuệ nhân tạo.md",
+    "wiki/AI và Machine Learning/ANFIS.md",
+    "wiki/AI và Machine Learning/Human-in-the-Loop.md",
+    "wiki/AI và Machine Learning/Cross Recurrence Plot và RQA.md",
+    "Excalidraw Thinh/Thanh's canvas.canvas",
+    "Untitled.canvas",
+    "Untitled 1.canvas"
+  ]
+}

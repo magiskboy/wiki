@@ -1,0 +1,8 @@
+{
+  "promptDelete": false,
+  "showInlineTitle": false,
+  "userIgnoreFilters": [
+    "__pycache__"
+  ],
+  "useMarkdownLinks": true
+}

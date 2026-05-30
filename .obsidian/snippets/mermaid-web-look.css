@@ -1,0 +1,82 @@
+/* Đồng bộ mermaid trong Obsidian với bản web (mermaid theme "default" v11).
+   Palette default của mermaid:
+     mainBkg            #ECECFF  (node fill)
+     nodeBorder         #9370DB  (node stroke)
+     primaryTextColor   #333
+     lineColor          #333333  (edge stroke)
+     edgeLabelBackground#e8e8e8
+     clusterBkg         #ffffde
+   Selector dùng `.mermaid svg` để bám sát mọi container của Obsidian
+   (Reading view, Live preview, popover, embed). */
+
+/* ---- Node shapes ---- */
+.mermaid svg .node rect,
+.mermaid svg .node circle,
+.mermaid svg .node ellipse,
+.mermaid svg .node polygon,
+.mermaid svg .node path,
+.mermaid svg .node .basic,
+.mermaid svg .node .label-container {
+  fill: #ECECFF !important;
+  stroke: #9370DB !important;
+  stroke-width: 1px !important;
+}
+
+/* ---- Node text ---- */
+.mermaid svg .node .label,
+.mermaid svg .node .nodeLabel,
+.mermaid svg .node foreignObject div,
+.mermaid svg .node foreignObject span,
+.mermaid svg .node foreignObject p {
+  color: #333 !important;
+  fill: #333 !important;
+  background-color: transparent !important;
+}
+
+/* ---- Edges (đường nối) ---- */
+.mermaid svg .edgePath .path,
+.mermaid svg .flowchart-link,
+.mermaid svg path.flowchart-link,
+.mermaid svg .edge path {
+  stroke: #333333 !important;
+  fill: none !important;
+}
+
+/* ---- Mũi tên ---- */
+.mermaid svg marker path,
+.mermaid svg defs marker path,
+.mermaid svg #arrowhead path,
+.mermaid svg [id^="mermaid-"] marker path {
+  fill: #333333 !important;
+  stroke: #333333 !important;
+}
+
+/* ---- Edge labels (chữ "space", "newline", "header line") ---- */
+.mermaid svg .edgeLabel,
+.mermaid svg .edgeLabel rect,
+.mermaid svg .edgeLabel .labelBkg,
+.mermaid svg .edgeLabels .edgeLabel,
+.mermaid svg .edgeLabel foreignObject,
+.mermaid svg .edgeLabel foreignObject div,
+.mermaid svg .edgeLabel foreignObject span,
+.mermaid svg .edgeLabel foreignObject p {
+  background-color: #e8e8e8 !important;
+  background: #e8e8e8 !important;
+  fill: #e8e8e8 !important;
+  color: #333 !important;
+}
+
+/* Cluster (subgraph khung) */
+.mermaid svg .cluster rect {
+  fill: #ffffde !important;
+  stroke: #aaaa33 !important;
+}
+.mermaid svg .cluster text {
+  fill: #333 !important;
+}
+
+/* Khung viền của block mermaid trên paper theme — giữ cho box wrapper nhạt */
+.markdown-rendered .mermaid,
+.markdown-source-view .mermaid {
+  background: transparent !important;
+}

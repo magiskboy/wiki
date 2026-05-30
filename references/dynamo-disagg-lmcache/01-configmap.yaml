@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: inference-config
+  namespace: ai-dept-serving
+  labels:
+    app.kubernetes.io/part-of: vllm-lmcache-single-node
+data:
+  MODEL_NAME: "Qwen/Qwen3-0.6B"
+
+  # vLLM serving
+  VLLM_PORT: "8000"
+  VLLM_MAX_MODEL_LEN: "32768"
+  VLLM_GPU_MEMORY_UTILIZATION: "0.85"
+  VLLM_TENSOR_PARALLEL_SIZE: "1"
+  # Disable vLLM prefix cache; LMCache handles reuse (including BlendCache).
+  VLLM_ENABLE_PREFIX_CACHING: "false"
+
+  # LMCache multiprocess server (ZMQ + HTTP health API)
+  LMCACHE_MP_PORT: "6555"
+  LMCACHE_HTTP_PORT: "8080"
+  LMCACHE_METRICS_PORT: "9090"
+  LMCACHE_CHUNK_SIZE: "256"
+  LMCACHE_L1_SIZE_GB: "60"
+  LMCACHE_MAX_WORKERS: "4"
+  LMCACHE_EVICTION_POLICY: "LRU"
+  # BlendEngineV2 for non-prefix KV reuse (CacheBlend).
+  LMCACHE_ENGINE_TYPE: "blend"
+
+  # L2 disk tier (POSIX fs adapter on PVC)
+  LMCACHE_L2_BASE_PATH: "/data/lmcache/l2"
+  LMCACHE_L2_ADAPTER: '{"type": "fs", "base_path": "/data/lmcache/l2", "relative_tmp_dir": ".tmp"}'
+
+  LMCACHE_LOG_LEVEL: "INFO"
+
+  # BlendCache client settings (vLLM pod — used with --engine-type blend on server)
+  LMCACHE_ENABLE_BLENDING: "True"
+  LMCACHE_BLEND_SPECIAL_STR: " # # "
+  LMCACHE_USE_LAYERWISE: "True"
+  LMCACHE_BLEND_CHECK_LAYERS: "1"
+  LMCACHE_BLEND_RECOMPUTE_RATIOS: "0.15"
+  LMCACHE_BLEND_MIN_TOKENS: "256"
+
+  # LMCacheMPConnector — vLLM reaches LMCache via Service DNS (node-local routing).
+  kv-transfer-config.json: |
+    {
+      "kv_connector": "LMCacheMPConnector",
+      "kv_role": "kv_both",
+      "kv_connector_extra_config": {
+        "lmcache.mp.host": "tcp://lmcache-server.ai-dept-serving.svc.cluster.local",
+        "lmcache.mp.port": 6555
+      }
+    }

@@ -1,0 +1,8 @@
+_source
+.lancedb
+.venv
+__pycache__
+.specstory
+.DS_Store
+.claudian
+web

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="{description}">
+  <script>
+    (function () {
+      try {
+        var THEMES = ["light", "dark", "paper"];
+        var saved = localStorage.getItem("my-brain-theme");
+        var theme = (saved && THEMES.indexOf(saved) !== -1)
+          ? saved
+          : (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      } catch (e) {}
+    })();
+  </script>
+  <title>{title} · Kho tri thức</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{root}assets/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#content">Tới nội dung</a>
+  <header class="site-header">
+    <a class="site-brand" href="{root}index.html">Thanh's second brain</a>
+    <nav class="site-nav" aria-label="Điều hướng">
+      <a href="{root}index.html">Mục lục</a>
+      <a href="{root}graph/index.html">Đồ thị</a>
+      <a href="{root}tag/index.html">Tags</a>
+    </nav>
+    <div class="theme-switcher" role="group" aria-label="Chọn giao diện">
+      <button type="button" data-theme-btn="light" aria-pressed="false">Sáng</button>
+      <button type="button" data-theme-btn="dark" aria-pressed="false">Tối</button>
+      <button type="button" data-theme-btn="paper" aria-pressed="false">Giấy</button>
+    </div>
+  </header>
+  <main class="site-main{main_class}" id="content">
+    <article class="article">
+{content}
+    </article>
+  </main>
+  <footer class="site-footer">
+    <p>Đọc tĩnh từ wiki — không theo dõi, không cookie.</p>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js" defer></script>
+  <script src="{root}assets/app.js" defer></script>
+{extra_scripts}
+</body>
+</html>

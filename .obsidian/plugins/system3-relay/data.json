@@ -1,0 +1,41 @@
+{
+  "release": {
+    "channel": "stable"
+  },
+  "sharedFolders": [
+    {
+      "path": "Excalidraw",
+      "guid": "6ce29948-ea7d-4b60-9b4d-0451bbcc91df",
+      "relay": "316b6de2-6183-4b1b-9a9d-80a73d24b005",
+      "sync": {
+        "images": true,
+        "audio": true,
+        "videos": true,
+        "pdfs": true,
+        "otherTypes": false
+      }
+    }
+  ],
+  "endpoints": {},
+  "enableDocumentStatus": false,
+  "enableNewLinkFormat": false,
+  "enableDeltaLogging": false,
+  "enableDocumentHistory": false,
+  "enableEditorTweens": false,
+  "enableNetworkLogging": false,
+  "enableCanvasSync": false,
+  "enableVerifyUploads": false,
+  "enableAutomaticDiffResolution": true,
+  "enableDiscordLogin": false,
+  "enableSelfManageHosts": true,
+  "enableToasts": true,
+  "enablePresenceAvatars": true,
+  "enableLiveEmbeds": true,
+  "enablePreviewViewHooks": true,
+  "enableMetadataViewHooks": true,
+  "enableKanbanView": true,
+  "debugging": false,
+  "login": {
+    "provider": "google"
+  }
+}

@@ -1,0 +1,145 @@
+apiVersion: nvidia.com/v1alpha1
+kind: DynamoGraphDeployment
+metadata:
+  name: disagg-kvbm-prefix
+  namespace: ai-dept-serving
+  labels:
+    app.kubernetes.io/part-of: dynamo-disagg-lmcache
+    benchmark.kvcache/stack: kvbm-prefix
+spec:
+  pvcs:
+    - name: kvbm-disk-cache
+      create: true
+      size: 4096Gi
+      volumeAccessMode: ReadWriteOnce
+      # Set to your DGX local NVMe StorageClass (e.g. local-path, topolvm, nfs-client).
+      storageClass: local-path
+
+  services:
+    Frontend:
+      componentType: frontend
+      replicas: 1
+      envs:
+        - name: DYN_ROUTER_MODE
+          value: kv
+      resources:
+        requests:
+          cpu: "16"
+          memory: 64Gi
+        limits:
+          cpu: "32"
+          memory: 128Gi
+      extraPodSpec:
+        nodeName: hla9104p1-escn8-smt-hgx45
+        mainContainer:
+          image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.1.1-cuda13
+          command:
+            - python3
+            - -m
+            - dynamo.frontend
+          args:
+            - --http-port
+            - "8000"
+            - --router-mode
+            - kv
+
+    VllmDecodeWorker:
+      envFromSecret: hf-token-secret
+      componentType: worker
+      replicas: 1
+      sharedMemory:
+        size: 64Gi
+      resources:
+        limits:
+          gpu: "1"
+          cpu: "64"
+          memory: 256Gi
+        requests:
+          gpu: "1"
+          cpu: "32"
+          memory: 128Gi
+          custom:
+            ephemeral-storage: 100Gi
+      extraPodSpec:
+        nodeName: hla9104p1-escn8-smt-hgx45
+        volumes:
+          - name: models
+            hostPath:
+              path: /mnt/models
+              type: Directory
+        mainContainer:
+          volumeMounts:
+            - name: models
+              mountPath: /mnt/models
+          image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.1.1-cuda13
+          workingDir: /workspace/examples/backends/vllm
+          command:
+            - python3
+            - -m
+            - dynamo.vllm
+          args:
+            - --model
+            - /mnt/models/hf/Qwen3-0.6B
+            - --disaggregation-mode
+            - decode
+            - --kv-transfer-config
+            - '{"kv_connector":"NixlConnector","kv_role":"kv_both"}'
+            - --gpu-memory-utilization
+            - "0.92"
+
+    VllmPrefillWorker:
+      envFromSecret: hf-token-secret
+      componentType: worker
+      replicas: 1
+      sharedMemory:
+        size: 64Gi
+      resources:
+        limits:
+          gpu: "1"
+          cpu: "96"
+          memory: 1700Gi
+        requests:
+          gpu: "1"
+          cpu: "48"
+          memory: 1600Gi
+          custom:
+            ephemeral-storage: 100Gi
+      envs:
+        - name: DYN_KVBM_CPU_CACHE_GB
+          value: "1536"
+        - name: DYN_KVBM_DISK_CACHE_GB
+          value: "4096"
+        - name: DYN_KVBM_DISK_CACHE_DIR
+          value: /var/kvbm/disk
+        - name: DYN_KVBM_METRICS
+          value: "true"
+      extraPodSpec:
+        nodeName: hla9104p1-escn8-smt-hgx45
+        volumes:
+          - name: models
+            hostPath:
+              path: /mnt/models
+              type: Directory
+        mainContainer:
+          volumeMounts:
+            - name: kvbm-disk-cache
+              mountPath: /var/kvbm/disk
+            - name: models
+              mountPath: /mnt/models
+          image: nvcr.io/nvidia/ai-dynamo/vllm-runtime:1.1.1-cuda13
+          workingDir: /workspace/examples/backends/vllm
+          command:
+            - python3
+            - -m
+            - dynamo.vllm
+          args:
+            - --model
+            - /mnt/models/hf/Qwen3-0.6B
+            - --disaggregation-mode
+            - prefill
+            - --kv-transfer-config
+            - '{"kv_connector":"PdConnector","kv_role":"kv_both","kv_connector_extra_config":{"connectors":[{"kv_connector":"DynamoConnector","kv_connector_module_path":"kvbm.vllm_integration.connector","kv_role":"kv_both"},{"kv_connector":"NixlConnector","kv_role":"kv_both"}]},"kv_connector_module_path":"kvbm.vllm_integration.connector"}'
+            - --kv-events-config
+            - '{"publisher":"zmq","topic":"kv-events","endpoint":"tcp://*:20080","enable_kv_cache_events":true}'
+            - --gpu-memory-utilization
+            - "0.92"

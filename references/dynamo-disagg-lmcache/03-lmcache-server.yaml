@@ -1,0 +1,179 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lmcache-server
+  namespace: ai-dept-serving
+  labels:
+    app.kubernetes.io/name: lmcache-server
+    app.kubernetes.io/component: kv-cache-manager
+    app.kubernetes.io/part-of: dynamo-disagg-lmcache
+    benchmark.kvcache/stack: lmcache-blend
+spec:
+  type: ClusterIP
+  # Route to LMCache only on the same node as the client (required for CUDA IPC).
+  internalTrafficPolicy: Local
+  ports:
+    - name: mp-rpc
+      port: 6555
+      targetPort: mp-rpc
+      protocol: TCP
+    - name: http
+      port: 8080
+      targetPort: http
+      protocol: TCP
+    - name: metrics
+      port: 9090
+      targetPort: metrics
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: lmcache-server
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lmcache-server
+  namespace: ai-dept-serving
+  labels:
+    app.kubernetes.io/name: lmcache-server
+    app.kubernetes.io/component: kv-cache-manager
+    app.kubernetes.io/part-of: dynamo-disagg-lmcache
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: lmcache-server
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: lmcache-server
+        app.kubernetes.io/component: kv-cache-manager
+    spec:
+      nodeName: hla9104p1-escn8-smt-hgx47
+      runtimeClassName: nvidia
+      # hostNetwork: true
+      hostIPC: true
+      nodeSelector:
+        nvidia.com/gpu.present: "true"
+      tolerations:
+        - key: nvidia.com/gpu
+          operator: Exists
+          effect: NoSchedule
+      volumes:
+        - name: dev-shm
+          hostPath:
+            path: /dev/shm
+            type: Directory
+        - name: l2-cache
+          emptyDir: {}
+      containers:
+        - name: lmcache-server
+          image: lmcache/standalone:v0.4.2
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: true
+          ports:
+            - name: mp-rpc
+              containerPort: 6555
+            - name: http
+              containerPort: 8080
+            - name: metrics
+              containerPort: 9090
+          command:
+            - /bin/bash
+            - -ec
+            - |
+              sed -i '782a\    add_handler_helper(server, RequestType.PING, engine.ping)' /opt/venv/lib/python3.12/site-packages/lmcache/v1/multiprocess/blend_server_v2.py
+              exec /opt/venv/bin/python3 -m lmcache.v1.multiprocess.http_server \
+                --host 0.0.0.0 \
+                --port "${LMCACHE_MP_PORT}" \
+                --http-host 0.0.0.0 \
+                --http-port "${LMCACHE_HTTP_PORT}" \
+                --chunk-size "${LMCACHE_CHUNK_SIZE}" \
+                --engine-type "${LMCACHE_ENGINE_TYPE}" \
+                --l1-size-gb "${LMCACHE_L1_SIZE_GB}" \
+                --eviction-policy "${LMCACHE_EVICTION_POLICY}" \
+                --max-workers "${LMCACHE_MAX_WORKERS}" \
+                --l2-adapter "${LMCACHE_L2_ADAPTER}" \
+                --prometheus-port "${LMCACHE_METRICS_PORT}"
+          env:
+            - name: LMCACHE_MAX_LOCAL_DISK_SIZE
+              value: "10"
+            - name: NVIDIA_VISIBLE_DEVICES
+              value: all
+            - name: NVIDIA_DRIVER_CAPABILITIES
+              value: all
+            - name: LMCACHE_MP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: inference-config
+                  key: LMCACHE_MP_PORT
+            - name: LMCACHE_HTTP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: inference-config
+                  key: LMCACHE_HTTP_PORT
+            - name: LMCACHE_METRICS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: inference-config
+                  key: LMCACHE_METRICS_PORT
+            - name: LMCACHE_CHUNK_SIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: inference-config
+                  key: LMCACHE_CHUNK_SIZE
+            - name: LMCACHE_ENGINE_TYPE
+              valueFrom:
+                configMapKeyRef:
+                  name: inference-config
+                  key: LMCACHE_ENGINE_TYPE
+            - name: LMCACHE_L1_SIZE_GB
+              valueFrom:
+                configMapKeyRef:
+                  name: inference-config
+                  key: LMCACHE_L1_SIZE_GB
+            - name: LMCACHE_EVICTION_POLICY
+              valueFrom:
+                configMapKeyRef:
+                  name: inference-config
+                  key: LMCACHE_EVICTION_POLICY
+            - name: LMCACHE_MAX_WORKERS
+              valueFrom:
+                configMapKeyRef:
+                  name: inference-config
+                  key: LMCACHE_MAX_WORKERS
+            - name: LMCACHE_L2_ADAPTER
+              valueFrom:
+                configMapKeyRef:
+                  name: inference-config
+                  key: LMCACHE_L2_ADAPTER
+            - name: LMCACHE_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: inference-config
+                  key: LMCACHE_LOG_LEVEL
+          volumeMounts:
+            - name: dev-shm
+              mountPath: /dev/shm
+            - name: l2-cache
+              mountPath: /data/lmcache/l2
+          resources:
+            requests:
+              cpu: "4"
+              memory: 65Gi
+            limits:
+              cpu: "8"
+              memory: 120Gi
+          readinessProbe: null
+            # httpGet:
+            #   path: /api/healthcheck
+            #   port: http
+            # initialDelaySeconds: 15
+            # periodSeconds: 10
+          livenessProbe: null
+            # httpGet:
+            #   path: /api/healthcheck
+            #   port: http
+            # initialDelaySeconds: 60
+            # periodSeconds: 30
+
