@@ -1,0 +1,62 @@
+---
+title: "Secrets of Python"
+date: "2023-06-20T19:24:00+07:00"
+draft: true
+categories:
+- Python
+description: "Python is a versatile language programming, easy to learn because of clean syntax. However, Python has also some secrets that not everyone know. In this post, I show you what are secrets of Python?"
+---
+
+
+## Everything in Python are object!
+
+Python is a script language and written by C. When you declare everything in Python, you really created a object in heap memory, that is called PyObject. PyObject pointer refers to a part of heap, which contains data of Python object.
+
+
+## Garbage collector will be executed after declaring a new variable
+
+Each you createa new variable, GC will collects and clean the memory. You can get more [here](https://github.com/python/cpython/blob/8281cbddc6/Modules/gcmodule.c#L2321)
+
+This process was optimized to run frequently by core members in Python's team. That's mean GC can be executed so many times but each running will be fast and need a little resources such as CPU and RAM. If you would like understand deep dive, you can checkout [the proposal](https://mail.python.org/pipermail/python-dev/2008-June/080579.html)
+
+So if you want to optimize Python application, just don't create new variables a lot if that is not really necessary or create functions on-fly. This is a example for optimzing performance via decrasing to create variables [Speeding up the protocol parsing](https://github.com/redis/redis-py/pull/2596)
+
+## Python has many implementations
+
+For many people, when calling to Python, they think about Python's version on [python.org](https://python.org). But, this is a one of many implementations of the Python's syntax. Python's implementation on python.org is a implementation in C. [source code](https://github.com/python/cpython)
+
+Moreover, Python was implemented in languages such as [Jython](https://jython.org) by Java, [RustPython](https://rustpython.github.io) by Rust or [PyPy](https://pypy.org) by C,...
+
+In general, Python's syntax is clear so many developers re-implemented because they want to improving performance or new features what they want, that isn't provided by CPython
+
+
+## Multi-thread can't run parallelly
+
+I tried to run [this code](https://gist.github.com/magiskboy/1b7a49b3f195c819829eb303e7ee1479) for testing multple threads on Python then result:
+
+
+<figure>
+<img src="https://user-images.githubusercontent.com/13352088/238660974-b0fde8b8-8131-4f39-88eb-3c9a39e329ef.png" alt="Stress test multi-thread in Python">
+<figcaption>Stress test multi-thread in Python</figcaption>
+</figure>
+
+
+You can see that, with CPU-bound operation, multiple threads is slower than single thread because of context-switching. In contrast, IO-bound operation can be improved with multiple threads. So why?
+
+Python introduced GIL (Global Interpreter Lock) concept to the community. GIL is used to lock all of data in the current process so at the same time, only one thread runs. The reason is to decrease deadlock's probability. You checkout [here](https://github.com/python/cpython/blob/main/Python/ceval_gil.c#L19) for detail
+
+In contrast, the blocking by IO can be improved by multiple thread. Because if thread is blocked and it doesn't need CPU at that time so it isn't a problem.
+
+## Python is an useful language
+
+I have been working on Python for 5 years thus I confident to say: "Python is really useful". Because of clear syntax, a lot of libraries were created by the community.
+
+Python can be used for web and some of popular web framework can be list out such as Flask, Django, Tornado or FastAPI recently (I written about it: [Why FastAPI fast?](/posts/why-fastapi-fast)). Python can be improved performance via extended tools such as C-API of CPython, Cython for transforming code like Python to C. Therefore, Python has the syntax not only clearly but also performancely.
+
+Python có thể dùng làm về Machine Learning, AI như scikit-learn, tensorflow, ... hay các tính toán khoa học như scipy, numpy, ... Mình thừa nhận rằng, đa phần các framework kể trên được viết bằng C/C++, Fortran,... nhưng do cú pháp sáng sủa, họ đã binding interface Python vào trong các thư viện để dễ sử dụng, qua đó thấy được lợi thế của một cú pháp đẹp đẽ.
+
+Besides, Python can be used for Machine learning, AI via scikit-learn, tensorflow
+
+Ngoài ra, Python có thể là các tác vụ như automation, testing, lập trình nhúng, IoT, game (làm những dạng game indie đơn giản), ... hay để tạo ra các plugin cho các phần mềm khác.
+
+Qua bài viết này, mình hi vọng bạn sẽ có cái nhìn chi tiết và hiểu hơn về Python cũng như cách nó hoạt động phần nào.

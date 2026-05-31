@@ -1,0 +1,96 @@
+---
+title: "Create a text completion for yourself without internet"
+date: "2023-12-20T17:11:00+07:00"
+tags:
+- Deep learning
+categories:
+- Deep learning
+description: "Since ChatGPT has become increasingly popular, chatbot is appearence everywhere in your life. In this post, I want to show you how to create a chatbot in locally with Python."
+---
+
+
+Since ChatGPT has become increasingly popular, the chatbot is appearing everywhere in your life. In this post, I want to show you how to create a simple text completion locally with Python.
+
+The first thing you need to create a chatbot is a LLM model. So, what is the LLM model?
+
+A large language model (LLM) is a type of artificial intelligence algorithm that uses deep learning
+techniques and massively large data sets to understand, summarize, generate, and predict new content.
+
+Basically, LLM is the brain of your chatbot. We have many different LLM models like LLAMA, Mistral, Mixtral..., so ChatGPT is one of them.
+
+In this post, let me show you a tool that can let you touch a lot of models without a deep understand of their: ollama.
+
+Ollama lets you manage, download and run different LLM models via simple interface.
+
+**Homepage**: [ollama.ai](https://ollama.ai/)
+
+**Github**: [github.com/jmorganca/ollama](https://github.com/jmorganca/ollama)
+
+First, you can start and run ollama in Docker via
+
+```sh
+$ docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+```
+
+Next, you need an LLM model and download it via the ollama command. In this example, I want to use the llama2 model for general use cases.
+
+```sh
+$ docker exec -it ollama ollama pull llama2
+pulling manifest 
+pulling 953202b3116b...   1% ▕                ▏  37 MB/4.1 GB  7.4 MB/s    9m7s
+```
+
+While the model is downloading, you can create a simple interface for your chatbot. For example, I wrote a CLI interface in Python.
+
+We need to call HTTP to ollama's API to generate text based on your input.
+The response to this is a stream of text.
+
+```python
+from typing import AsyncIterator
+import asyncio
+import json
+import httpx
+
+async def reply(prompt: str) -> AsyncIterator[str]:
+    url = f"http://localhost:11434/api/generate"
+    body = {
+        "stream": True, 
+        "model": "llama2", 
+        "prompt": prompt,
+    }
+
+    with httpx.stream("POST", url, json=body, timeout=60) as res:
+        for line in res.iter_lines():
+            data = json.loads(line)
+            if data.get("done", True):
+                return
+            yield data.get("response")
+
+async def main():
+    while True:
+        prompt = input("Me: ")
+        if prompt == '.exit':
+            break
+
+        print("Bot: ", end="", flush=True)
+        async for text in reply(prompt):
+            print(text, end="", flush=True)
+        print("", flush=True)
+
+if __name__ == '__main__':
+    asyncio.run(main())
+```
+
+Finally, this is a result
+
+<iframe 
+    width="100%" 
+    height="500" 
+    src="https://www.youtube.com/embed/jsD-y-v8mkQ?si=vEQaY5LQjUwVIQs_" 
+    title="YouTube video player" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen>
+</iframe>
+
+In next post, I want to share you how create a simple chatbot like ChatGPT locally.

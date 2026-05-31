@@ -1,0 +1,12 @@
+{% set lp = page.locale_prefix | default('') %}
+{% set home = '/' if lp == '' else '/' + lp + '/' %}
+<div class="post-item">
+  <a href="{{ item.url }}"><h2 class="title">{{ item.title }}</h2></a>
+  {% if item.date %}<span class="date">{{ format_date(item.date, page.locale | default('vi')) }}</span>{% endif %}
+  {% if item.description %}<div class="description">{{ item.description }}</div>{% endif %}
+  {% if item.tags %}
+    <ul class="tags">
+      {% for tag in item.tags %}<li><a href="{{ home }}tags/{{ tag }}/">{{ tag }}</a></li>{% endfor %}
+    </ul>
+  {% endif %}
+</div>

@@ -1,0 +1,51 @@
+{% set lp = page.locale_prefix | default('') %}
+{% set home = '/' if lp == '' else '/' + lp + '/' %}
+<div class="nav">
+  <div class="nav-top">
+    <div class="left">
+      {% if page.translations and page.translations | length > 1 %}
+        <span class="lang-switcher">
+          {% for t in page.translations %}
+            {% if not loop.first %}<span class="sep">|</span>{% endif %}
+            {% if t.current %}<span class="lang active">{{ t.locale | upper }}</span>
+            {% else %}<a class="lang" href="{{ t.url }}" hreflang="{{ t.locale }}">{{ t.locale | upper }}</a>{% endif %}
+          {% endfor %}
+        </span>
+      {% endif %}
+      <select class="theme-switcher" aria-label="Chế độ xem" onchange="setTheme(this.value)">
+        <option value="light">Sáng</option>
+        <option value="dark">Tối</option>
+        <option value="papyrus">Papyrus</option>
+      </select>
+    </div>
+    <div class="nav-social">
+      {% for s in site.socials %}<a href="{{ s.link }}" target="_blank" rel="noreferrer">{{ s.title }}</a>{% endfor %}
+    </div>
+  </div>
+  <div class="nav-bottom">
+    {% for item in site.navs %}
+      {% if item.link.startswith('http') %}
+        <a href="{{ item.link }}" target="_blank" rel="noreferrer">{{ item.title }}</a>
+      {% else %}
+        <a href="{{ home }}{{ item.link.lstrip('/') }}">{{ item.title }}</a>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+<script>
+  function setTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    localStorage.setItem('theme', t);
+    var frame = document.querySelector('.utterances-frame');
+    if (frame) {
+      frame.contentWindow.postMessage(
+        {type: 'set-theme', theme: t === 'light' ? 'github-light' : 'github-dark'},
+        'https://utteranc.es'
+      );
+    }
+  }
+  (function () {
+    var sel = document.querySelector('.theme-switcher');
+    if (sel) sel.value = localStorage.getItem('theme') || 'light';
+  })();
+</script>

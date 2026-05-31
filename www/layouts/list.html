@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="post-list">
+  {% if page.title and '/tags/' in page.url %}<h1>#{{ page.title }}</h1>{% endif %}
+  {% for item in page.entries %}
+    {{ partial("partials/postitem.html", {"item": item, "page": page}) }}
+    {% if not loop.last %}<hr>{% endif %}
+  {% endfor %}
+  {% if page.paginator %}
+    <nav class="pagination">
+      {% if page.paginator.prev_url %}<a href="{{ page.paginator.prev_url }}">« Trước</a>{% endif %}
+      <span>{{ page.paginator.number }} / {{ page.paginator.total_pages }}</span>
+      {% if page.paginator.next_url %}<a href="{{ page.paginator.next_url }}">Tiếp »</a>{% endif %}
+    </nav>
+  {% endif %}
+</div>
+{% endblock %}

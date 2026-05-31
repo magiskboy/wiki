@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block main %}
+{% set lp = page.locale_prefix | default('') %}
+{% set home = '/' if lp == '' else '/' + lp + '/' %}
+<article class="post">
+  <div class="heading">
+    <h1>{{ page.title }}</h1>
+    {% if page.date %}<span class="date">{{ format_date(page.date, page.locale | default('vi')) }}</span>{% endif %}
+    {% if page.description %}<p class="description">{{ page.description }}</p>{% endif %}
+    {% if page.tags %}
+      <ul class="tags">
+        {% for tag in page.tags %}<li><a href="{{ home }}tags/{{ tag }}/">{{ tag }}</a></li>{% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+  <div class="post-content">{{ content }}</div>
+</article>
+{% if site.utterances_repo %}
+<section class="comments">
+  <script src="https://utteranc.es/client.js"
+          repo="{{ site.utterances_repo }}"
+          issue-term="pathname"
+          theme="github-light"
+          crossorigin="anonymous"
+          async></script>
+</section>
+<script>
+  (function () {
+    var theme = localStorage.getItem('theme') || 'light';
+    var s = document.querySelector('script[src="https://utteranc.es/client.js"]');
+    if (s && theme !== 'light') s.setAttribute('theme', 'github-dark');
+  })();
+</script>
+{% endif %}
+{% endblock %}

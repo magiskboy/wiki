@@ -1,0 +1,68 @@
+# Build the blog with pyssg and deploy it to Cloudflare Workers with Wrangler.
+#
+# Modeled on the pyssg docs deploy workflow. pyssg is not published to PyPI, so
+# it is installed straight from git; the `[plugins]` extra pulls markdown,
+# jinja2, pyyaml and pygments -- everything pyssg.config.py and www_plugins.py
+# need. `pyssg build` writes the site to ./dist, which Wrangler serves as a
+# static-assets Worker (see wrangler.jsonc).
+#
+# Pull requests build and verify the site but do not deploy. Pushes to main
+# (and manual runs) build and deploy.
+#
+# Requires two repository secrets (Settings -> Secrets and variables -> Actions):
+#   CLOUDFLARE_API_TOKEN   token with the "Edit Cloudflare Workers" permission
+#   CLOUDFLARE_ACCOUNT_ID  the account that owns the Worker
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "www/**"
+  pull_request:
+    paths:
+      - "www/**"
+  workflow_dispatch:
+
+# One deploy at a time per ref; newer pushes supersede in-flight runs.
+concurrency:
+  group: deploy-www-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: www
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
+        with:
+          python-version: "3.13"
+          enable-cache: true
+
+      # Install pyssg from git (it is git-install only), pinned to a released
+      # tag for reproducible builds. Bump this when upgrading pyssg.
+      - name: Install pyssg
+        run: |
+          uv venv
+          uv pip install "pyssg[plugins] @ git+https://github.com/magiskboy/pyssg@v1.1.0"
+
+      - name: Build site
+        run: .venv/bin/pyssg build
+
+      - name: Verify output
+        run: test -f public/index.html
+
+      - name: Deploy to Cloudflare Workers
+        if: github.event_name != 'pull_request'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # v4 is required to deploy a static-assets-only Worker (no `main`).
+          wranglerVersion: "4.40.0"
+          workingDirectory: www
+          command: deploy

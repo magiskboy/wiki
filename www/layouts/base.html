@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="{{ page.locale | default('vi') }}" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% if page.title and page.title != site.title %}{{ page.title }} · {{ site.title }}{% else %}{{ site.title }}{% endif %}{% endblock %}</title>
+  {% if seo is defined %}{{ seo() }}{% endif %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Source+Code+Pro&display=swap">
+  <link rel="stylesheet" href="/style.css">
+  {% if highlight_css is defined %}<style>{{ highlight_css() }}</style>{% endif %}
+  {% if page.math %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+  {% endif %}
+  <script>
+    (function () {
+      document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
+    })();
+  </script>
+</head>
+<body>
+  {{ partial("partials/nav.html", {"page": page}) }}
+  <main class="content">
+    {% block main %}{{ content }}{% endblock %}
+  </main>
+  {{ partial("partials/footer.html", {"page": page}) }}
+  {% if page.math %}
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}]});"></script>
+  {% endif %}
+  {% if site.gtag_id %}
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.gtag_id }}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '{{ site.gtag_id }}');
+  </script>
+  {% endif %}
+</body>
+</html>
