@@ -5,4 +5,5 @@ __pycache__
 .specstory
 .DS_Store
 .claudian
-web
+public
+.claude

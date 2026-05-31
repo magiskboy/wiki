@@ -54,13 +54,13 @@ trong đó
 $$
 W_{q_i}, \ W_{k_i}, \ W_{v_i} \in \mathbb{R}^{d_{model}, \ d_{head}} \ \text{với} \ i = 1...n_{head}, \\
 X_0 \in \mathbb{R}^{n, \ d_{model}} \\
-
 \Rightarrow \ Q_i, K_i, V_i \in \mathbb{R}^{n, \: d_{head}} \ \text{với} \ i = 1...n_{head}
 $$
 
 Lưu ý: trong các kiến trúc khác, kích thước của các ma trận $W_q, W_k, W_v$ có thể là khác nhau.
 
 Tính Attention (A)
+
 $$
 \text{Attention}(Q_i, K_i, V_i) = \text{softmax}\!\left( \frac{Q_i \ . \ K_i^{T}}{\sqrt{d_{head}}} \right) \ . \ V_i \ (4)
 $$
@@ -199,7 +199,6 @@ trong đó
 
 $$
 X_m[n+t] \in \mathbb{R}^{d_{model}} \\
-
 \Rightarrow \ Q_i, K_i, V_i \in \mathbb{R}^{d_{model}, \: d_{head}} \ \text{với} \ i = 1...n_{head}
 $$
 

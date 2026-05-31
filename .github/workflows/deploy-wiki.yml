@@ -1,0 +1,58 @@
+name: Deploy Wiki
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "wiki/**"
+      - "references/**"
+      - ".github/workflows/deploy-wiki.yml"
+  pull_request:
+    paths:
+      - "wiki/**"
+      - "references/**"
+      - ".github/workflows/deploy-wiki.yml"
+  workflow_dispatch:
+
+# One deploy at a time per ref; newer pushes supersede in-flight runs.
+concurrency:
+  group: deploy-wiki-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: wiki
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
+        with:
+          python-version: "3.13"
+          enable-cache: true
+
+      # Install pyssg from git (it is git-install only), pinned to a released
+      # tag for reproducible builds. Bump this when upgrading pyssg.
+      - name: Install pyssg
+        run: |
+          uv venv
+          uv pip install "pyssg[plugins] @ git+https://github.com/magiskboy/pyssg@v1.1.0" pymdown-extensions
+
+      - name: Build site
+        run: .venv/bin/pyssg build
+
+      - name: Verify output
+        run: test -f public/index.html
+
+      - name: Deploy to Cloudflare Workers
+        if: github.event_name != 'pull_request'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # v4 is required to deploy a static-assets-only Worker (no `main`).
+          wranglerVersion: "4.40.0"
+          workingDirectory: wiki
+          command: deploy

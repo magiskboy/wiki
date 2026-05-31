@@ -9,6 +9,7 @@ import sys
 from pathlib import Path
 
 from pyssg.config import Config
+from pymdownx.arithmatex import ArithmatexExtension
 from pyssg_cli.presets import i18n_blog
 from pyssg_plugins import Highlight, Redirects, StaticFiles, Statistics
 
@@ -18,12 +19,17 @@ from plugins import (  # noqa: E402
     Categories,
     HighlightThemes,
     Math,
+    Tags,
     TemplateHelpers,
 )
 
 # Old Vietnamese slugs that must keep resolving after the migration.
+CV_URL = "https://cv.nkthanh.dev"
 LEGACY_REDIRECTS = {
     "/posts/": "/",
+    # The old /about résumé page is superseded by the maintained external CV.
+    "/about/": CV_URL,
+    "/en/about/": CV_URL,
     "/posts/bat-dong-bo-trong-python-phan-1-coroutine/": (
         "/posts/asynchronous-in-python-part-1/"
     ),
@@ -42,6 +48,7 @@ NAVS = [
     {"title": "Bài viết", "link": "/"},
     {"title": "CV", "link": "https://cv.nkthanh.dev"},
     {"title": "Danh mục", "link": "/categories/"},
+    {"title": "Thẻ", "link": "/tags/"},
 ]
 
 
@@ -51,7 +58,16 @@ def config() -> Config:
         default_locale="vi",
         posts_dir="posts",
         page_size=10,
-        markdown_extensions=("fenced_code", "tables", "toc"),
+        # arithmatex (generic) brackets $...$/$$...$$ as \(..\)/\[..\] BEFORE
+        # python-markdown runs its inline pass, so underscores inside formulas
+        # are no longer eaten into <em>; KaTeX then renders the brackets client
+        # -side. A bare string can't carry generic=True, so pass an instance.
+        markdown_extensions=(
+            "fenced_code",
+            "tables",
+            "toc",
+            ArithmatexExtension(generic=True),
+        ),
         rss=True,
         sitemap=True,
         robots=True,
@@ -69,6 +85,7 @@ def config() -> Config:
     plugins.append(HighlightThemes())
     plugins.append(Math())
     plugins.append(Categories())
+    plugins.append(Tags())
     plugins.append(Redirects(rules=LEGACY_REDIRECTS))
     plugins.append(Statistics())
 

@@ -2,7 +2,8 @@
   "promptDelete": false,
   "showInlineTitle": false,
   "userIgnoreFilters": [
-    "__pycache__"
+    "__pycache__",
+    "/__pycache__/"
   ],
   "useMarkdownLinks": true
 }

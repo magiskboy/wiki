@@ -1,18 +1,4 @@
-# Build the blog with pyssg and deploy it to Cloudflare Workers with Wrangler.
-#
-# Modeled on the pyssg docs deploy workflow. pyssg is not published to PyPI, so
-# it is installed straight from git; the `[plugins]` extra pulls markdown,
-# jinja2, pyyaml and pygments -- everything pyssg.config.py and www_plugins.py
-# need. `pyssg build` writes the site to ./dist, which Wrangler serves as a
-# static-assets Worker (see wrangler.jsonc).
-#
-# Pull requests build and verify the site but do not deploy. Pushes to main
-# (and manual runs) build and deploy.
-#
-# Requires two repository secrets (Settings -> Secrets and variables -> Actions):
-#   CLOUDFLARE_API_TOKEN   token with the "Edit Cloudflare Workers" permission
-#   CLOUDFLARE_ACCOUNT_ID  the account that owns the Worker
-name: Deploy
+name: Deploy www
 
 on:
   push:
@@ -48,7 +34,7 @@ jobs:
       - name: Install pyssg
         run: |
           uv venv
-          uv pip install "pyssg[plugins] @ git+https://github.com/magiskboy/pyssg@v1.1.0"
+          uv pip install "pyssg[plugins] @ git+https://github.com/magiskboy/pyssg@v1.1.0" pymdown-extensions
 
       - name: Build site
         run: .venv/bin/pyssg build

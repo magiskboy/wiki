@@ -36,7 +36,6 @@ Hình ảnh bên dưới cho chúng ta thấy một vài giải pháp cho các v
 <figcaption>Hệ sinh thái của lập trình bất đồng bộ</figcaption>
 </figure>
 
-
 Lưu ý, các thread trong Python là các native thread, nhưng do một vài policy (cụ thể là trong bản cpython), GIL (Global Interpreter Lock) sẽ không cho phép chúng chạy 2 thread đồng thời. Do đó, các Python thread không thực xử xử lí song song và thật sự mình không thích sử dụng chúng do:
 
 - Tốn tài nguyên duy trì

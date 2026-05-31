@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block main_class %} site-main--wide{% endblock %}
+{% block main %}
+<article class="article">
+  <h1>Bản đồ category</h1>
+  <p class="index-summary">{{ page.total }} category</p>
+  <section class="index-section index-section--tags">
+    <ul class="tag-card-grid">
+    {% for c in page.cards %}
+      <li><a class="tag-card" href="{{ c.url }}"><span class="tag-card-name">{{ c.name }}</span><span class="tag-card-count">{{ c.count }} bài</span></a></li>
+    {% endfor %}
+    </ul>
+  </section>
+</article>
+{% endblock %}

@@ -1,4 +1,8 @@
-<script id="graph-data" type="application/json">{json_blob}</script>
+{% extends "base.html" %}
+{% block title %}Đồ thị tri thức · {{ site.title }}{% endblock %}
+{% block main_class %} site-main--graph{% endblock %}
+{% block main %}
+<script id="graph-data" type="application/json">{{ page.graph_json | safe }}</script>
 <div class="graph-stage">
   <div id="kb-graph" role="application" aria-label="Đồ thị tri thức"></div>
   <div id="kb-graph-3d" role="application" aria-label="Đồ thị tri thức (3D)" hidden></div>
@@ -11,3 +15,12 @@
   </div>
   <aside id="graph-panel" class="graph-panel" hidden></aside>
 </div>
+{% endblock %}
+{% block scripts %}
+<script>window.KB_ROOT="";</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.30.2/cytoscape.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/layout-base@2.0.1/layout-base.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cose-base@2.2.0/cose-base.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cytoscape-fcose@2.2.0/cytoscape-fcose.js"></script>
+<script src="/assets/graph.js" defer></script>
+{% endblock %}

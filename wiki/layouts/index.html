@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}{{ site.title }} · Kho tri thức{% endblock %}
+{% block main_class %} site-main--index{% endblock %}
+{% block main %}
+<article class="article">
+  <h1>Mục lục</h1>
+  <p class="index-summary">{{ page.counts.articles }} tri thức · {{ page.counts.categories }} category · {{ page.counts.tags }} tag</p>
+
+  <section class="index-section index-section--top">
+    <h2 class="index-section-title">Top bài viết nhiều liên kết nhất</h2>
+    <ol class="index-top-list">
+    {% for it in page.top %}
+      <li class="index-top-item"><span class="index-top-rank">{{ "%02d"|format(it.rank) }}</span><a class="index-top-link" href="{{ it.url }}">{{ it.title }}</a><span class="index-top-count" title="số liên kết">{{ it.links }}</span></li>
+    {% endfor %}
+    </ol>
+  </section>
+
+  <section class="index-section index-section--categories">
+    <h2 class="index-section-title">Category</h2>
+    <ul class="tag-card-grid">
+    {% for c in page.category_cards %}
+      <li><a class="tag-card" href="{{ c.url }}"><span class="tag-card-name">{{ c.name }}</span><span class="tag-card-count">{{ c.count }} bài</span></a></li>
+    {% endfor %}
+    </ul>
+    <p class="index-aside-more"><a href="/categories/">Bản đồ category →</a></p>
+  </section>
+
+  <section class="index-section index-section--tags">
+    <h2 class="index-section-title">Tag</h2>
+    <ul class="tag-card-grid">
+    {% for t in page.tag_cards %}
+      <li><a class="tag-card" href="{{ t.url }}"><span class="tag-card-name">{{ t.name }}</span><span class="tag-card-count">{{ t.count }} bài</span></a></li>
+    {% endfor %}
+    </ul>
+    <p class="index-aside-more"><a href="/tags/">Bản đồ tag →</a></p>
+  </section>
+</article>
+{% endblock %}

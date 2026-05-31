@@ -11,12 +11,14 @@
             "id": "053bdfdd64e18301",
             "type": "leaf",
             "state": {
-              "type": "excalidraw",
+              "type": "markdown",
               "state": {
-                "file": "excalidraw/Kiến trúc hạ tầng AI cơ bản.excalidraw.md"
+                "file": "www/content/vi/posts/asynchronous-in-python-part-1.md",
+                "mode": "preview",
+                "source": false
               },
-              "icon": "excalidraw-icon",
-              "title": "Kiến trúc hạ tầng AI cơ bản.excalidraw"
+              "icon": "lucide-file",
+              "title": "asynchronous-in-python-part-1"
             }
           }
         ]
@@ -176,7 +178,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 422.5
+    "width": 422.5,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -186,39 +189,39 @@
       "templates:Insert template": true,
       "command-palette:Open command palette": true,
       "bases:Create new base": true,
-      "realclaudian:Open Claudian": true,
+      "realclaudian:Open Claudian": false,
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "b76bd0c8191284d4",
+  "active": "053bdfdd64e18301",
   "lastOpenFiles": [
+    "wiki/public/assets/graph.json",
+    "wiki/public/graph/index.html",
+    "wiki/public/graph",
+    "wiki/public/categories/web-development/index.html",
+    "wiki/public/categories/system-level/index.html",
+    "wiki/public/categories/phat-trien-ban-than/index.html",
+    "wiki/public/categories/game-development/index.html",
+    "wiki/public/categories/devops-va-infrastructure/index.html",
+    "wiki/public/categories/ai-va-machine-learning/index.html",
+    "wiki/public/categories/web-development",
+    "wiki/public/categories/system-level",
+    "excalidraw/Kiến trúc hạ tầng AI cơ bản.excalidraw.md",
     "wiki/DevOps và Infrastructure/Cài đặt operator trên OpenShift air-gapped.md",
-    "excalidraw/Kiến trúc hạ tầng AI cơ bản.excalidraw.md",
-    "excalidraw/Kiến trúc hạ tầng AI cơ bản.excalidraw.md",
     "_templates/wiki.md",
-    "daily",
     "AI la gi.md",
     "Thanh.md",
     "wiki/Web development/Kurento Protocol.md",
     "wiki/Web development/Bài toán C10K.md",
     "wiki/Web development/Arbiter và worker trong ASGI server.md",
     "notes/2026-05-29.md",
-    "_templates",
     "AGENTS.md",
     "wiki/Phát triển bản thân/Hội nhập ecosystem qua interface có sẵn.md",
     "CLAUDE.md",
     "excalidraw/Drawing 2026-05-29 21.14.38.excalidraw.md",
     "notes/Untitled.md",
-    "notes",
     "Drawing 2026-05-29 21.31.43.excalidraw.md",
-    "web/assets/graph.json",
-    "references/llm-d.ai-Predicted-Latency Based Scheduling for LLMs.pdf",
-    "references/F5 Inference Optimizer.pdf",
     "wiki/_tags.md",
-    "web/graph/index.html",
-    "web/graph",
-    "web/category/index.html",
-    "web/category",
     "wiki/_index.md",
     "wiki/Tổng quan.md",
     "README.md",

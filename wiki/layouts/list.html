@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block main %}
+<article class="article">
+  <h1>{{ page.title }}</h1>
+  <p class="tag-page-meta">{{ page.count }} bài viết</p>
+  <section class="index-section index-section--top">
+    <h2 class="index-section-title">Bài viết</h2>
+    <ol class="index-top-list">
+    {% for it in page.entries %}
+      <li class="index-top-item"><span class="index-top-rank">{{ "%02d"|format(it.rank) }}</span><a class="index-top-link" href="{{ it.url }}">{{ it.title }}</a><span class="index-top-count" title="số liên kết">{{ it.links }}</span></li>
+    {% endfor %}
+    </ol>
+  </section>
+  <p class="index-aside-more"><a href="{{ page.map_url }}">← {{ page.map_label }}</a></p>
+</article>
+{% endblock %}

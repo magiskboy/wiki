@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block main_class %} site-main--wide{% endblock %}
+{% block main %}
+<article class="article">
+  <h1><center>Tags</center></h1>
+  <p class="tag-index-note">{{ page.total }} tag</p>
+  <nav class="tag-cloud" aria-label="Tag theo số bài viết">
+  {% for it in page.cloud %}
+    <a class="tag-cloud-item" href="{{ it.url }}" style="font-size: {{ it.size }}rem" title="{{ it.tag }} — {{ it.count }} bài">{{ it.tag }}</a>
+  {% endfor %}
+  </nav>
+</article>
+{% endblock %}
