@@ -1,0 +1,10 @@
+<div class="post-item">
+  <a href="{{ item.url }}"><h2 class="title">{{ item.title }}</h2></a>
+  {% if item.date_display %}<span class="date">{{ item.date_display }}</span>{% endif %}
+  {% if item.description %}<div class="description">{{ item.description }}</div>{% endif %}
+  {% if item.tag_links %}
+    <ul class="tags">
+      {% for tag in item.tag_links %}<li><a href="{{ tag.url }}">{{ tag.name }}</a></li>{% endfor %}
+    </ul>
+  {% endif %}
+</div>

@@ -1,24 +1,31 @@
-"""``data-theme``-scoped Pygments stylesheets.
+"""HighlightThemes: stylesheet Pygments scope theo ``data-theme``.
 
-The built-in Highlight plugin only switches code colors via
-``prefers-color-scheme``, but this site toggles themes with a ``data-theme``
-attribute. ``HighlightThemes`` replaces the ``highlight_css()`` global with one
-Pygments stylesheet per theme, each scoped under its ``[data-theme=...]``
-selector, so code blocks follow the theme switcher.
+Plugin ``highlight`` built-in chỉ sinh một bộ màu (``site.highlight_css``). Site
+này đổi giao diện bằng thuộc tính ``data-theme`` nên cần một stylesheet riêng cho
+mỗi theme, mỗi cái scope dưới ``[data-theme=...]``. Ghi đè thẳng
+``config.site["highlight_css"]`` để base template nhúng vào ``<style>``.
 """
 
 from __future__ import annotations
 
-from pyssg.build import Build
-from pyssg.builder import Builder
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from pyssg.core.builder import Builder
+
+# Class Pygments dùng bởi plugin highlight built-in (cssclass="highlight").
+_CSS_CLASS = "highlight"
 
 
 class HighlightThemes:
+    name = "highlight_themes"
+    cache_version = "1.0.0"
+
     def __init__(
         self,
         *,
         themes: dict[str, str] | None = None,
-        css_class: str = "highlight",
+        css_class: str = _CSS_CLASS,
     ) -> None:
         self._themes = themes or {
             "light": "default",
@@ -26,25 +33,13 @@ class HighlightThemes:
             "papyrus": "gruvbox-dark",
         }
         self._css_class = css_class
-        self._css: str | None = None
 
     def apply(self, builder: Builder) -> None:
-        # After Highlight's collect (stage 0) so this global wins.
-        builder.hooks.collect.tap("HighlightThemes", self._register, stage=500)
-
-    def _register(self, build: Build) -> None:
-        try:
-            from markupsafe import Markup
-        except ImportError:
+        if builder.config is None:
             return
-        css = Markup(self._stylesheet())
-        globals_ = build.meta.setdefault("template_globals", {})
-        if isinstance(globals_, dict):
-            globals_["highlight_css"] = lambda: css
+        builder.config.site["highlight_css"] = self._stylesheet()
 
     def _stylesheet(self) -> str:
-        if self._css is not None:
-            return self._css
         from pygments.formatters import HtmlFormatter
 
         blocks = []
@@ -57,5 +52,4 @@ class HighlightThemes:
                     )
                 )
             )
-        self._css = "\n".join(blocks)
-        return self._css
+        return "\n".join(blocks)

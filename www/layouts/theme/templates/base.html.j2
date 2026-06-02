@@ -1,16 +1,16 @@
 <!doctype html>
-<html lang="{{ page.locale | default('vi') }}" data-theme="light">
+<html lang="{{ page.get('lang') or default_locale or 'vi' }}" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}{% if page.title and page.title != site.title %}{{ page.title }} · {{ site.title }}{% else %}{{ site.title }}{% endif %}{% endblock %}</title>
-  {% if seo is defined %}{{ seo() }}{% endif %}
+  <meta name="description" content="{{ page.get('description') or site.get('description', '') }}">
+  <title>{% block title %}{% if page.get('title') and page.get('title') != site.get('title') %}{{ page.title }} · {{ site.title }}{% else %}{{ site.get('title', '') }}{% endif %}{% endblock %}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Source+Code+Pro&display=swap">
   <link rel="stylesheet" href="/style.css">
-  {% if highlight_css is defined %}<style>{{ highlight_css() }}</style>{% endif %}
-  {% if page.math %}
+  {% if site.get('highlight_css') %}<style>{{ site.highlight_css }}</style>{% endif %}
+  {% if page.get('math') %}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
   {% endif %}
   <script>
@@ -20,17 +20,17 @@
   </script>
 </head>
 <body>
-  {{ partial("partials/nav.html", {"page": page}) }}
+  {% include "partials/nav.html.j2" %}
   <main class="content">
-    {% block main %}{{ content }}{% endblock %}
+    {% block main %}{{ content_html }}{% endblock %}
   </main>
-  {{ partial("partials/footer.html", {"page": page}) }}
-  {% if page.math %}
+  {% include "partials/footer.html.j2" %}
+  {% if page.get('math') %}
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"
     onload="renderMathInElement(document.body, {delimiters: [{left: '\\[', right: '\\]', display: true}, {left: '\\(', right: '\\)', display: false}]});"></script>
   {% endif %}
-  {% if site.gtag_id %}
+  {% if site.get('gtag_id') %}
   <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.gtag_id }}"></script>
   <script>
     window.dataLayer = window.dataLayer || [];

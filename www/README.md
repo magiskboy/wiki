@@ -6,11 +6,15 @@ Code for [nkthanh.dev](https://nkthanh.dev), migrated from Next.js/MDX to
 ## Prerequisites
 
 - Python >= 3.13
-- pyssg with the `template` and `highlight` extras
+- Dependencies pinned in `requirements.txt` (pyssg `v0.1.0` + pymdown-extensions):
+
+```bash
+$ uv venv && uv pip install -r requirements.txt
+```
 
 ## Usage
 
-Build the site (output goes to `dist/`):
+Build the site (output goes to `public/`):
 
 ```bash
 $ pyssg build
@@ -27,14 +31,21 @@ $ pyssg serve
 | Path               | Description                                              |
 |--------------------|----------------------------------------------------------|
 | `content/`         | Markdown posts, one folder per locale (`vi`, `en`).      |
-| `layouts/`         | Jinja templates and partials.                            |
-| `static/`          | Stylesheet and images, copied verbatim to the site root. |
-| `pyssg.config.py`  | Build config: the `i18n_blog` preset plus site options.  |
-| `plugins/`         | Site-local plugins: localized dates, KaTeX, categories.  |
+| `layouts/theme/`   | Layout package: `layout.toml` + Jinja templates.         |
+| `static/`          | Stylesheet, images and `robots.txt`, copied to the root. |
+| `pyssg.config.py`  | Build config: built-in plugins + site-local plugins.     |
+| `plugins/`         | Site-local plugins (see below).                          |
+
+`plugins/` holds the customizations the multilingual blog needs on top of the
+built-in pyssg plugins: markdown with KaTeX math (`markdown`), per-locale
+paginated post lists (`collections`), per-locale tag/category pages
+(`taxonomy`), per-locale RSS (`rss`), `data-theme`-scoped code highlighting
+(`highlighting`), legacy URL redirects (`redirects`), and the `static/` copier
+(`static_files`).
 
 ## Settings
 
-Site options live in `pyssg.config.py` (`Config.options`):
+Site options live in `pyssg.config.py` (`Config.site`):
 
 | Option              | Description                                                                 |
 |---------------------|-----------------------------------------------------------------------------|

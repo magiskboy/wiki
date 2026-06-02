@@ -1,14 +1,22 @@
-{% set lp = page.locale_prefix | default('') %}
-{% set home = '/' if lp == '' else '/' + lp + '/' %}
+{% set plang = page.get('lang') or default_locale or 'vi' %}
+{% set home = '/' if plang == (default_locale or 'vi') else '/' + plang + '/' %}
 <div class="nav">
   <div class="nav-top">
     <div class="left">
-      {% if page.translations and page.translations | length > 1 %}
+      {% if page.get('translations') and page.translations | length > 1 %}
         <span class="lang-switcher">
           {% for t in page.translations %}
             {% if not loop.first %}<span class="sep">|</span>{% endif %}
-            {% if t.current %}<span class="lang active">{{ t.locale | upper }}</span>
-            {% else %}<a class="lang" href="{{ t.url }}" hreflang="{{ t.locale }}">{{ t.locale | upper }}</a>{% endif %}
+            {% if t.active %}<span class="lang active">{{ t.lang | upper }}</span>
+            {% else %}<a class="lang" href="{{ t.url }}" hreflang="{{ t.lang }}">{{ t.lang | upper }}</a>{% endif %}
+          {% endfor %}
+        </span>
+      {% elif translations %}
+        <span class="lang-switcher">
+          <span class="lang active">{{ plang | upper }}</span>
+          {% for t in translations %}
+            <span class="sep">|</span>
+            <a class="lang" href="{{ t.url }}" hreflang="{{ t.lang }}">{{ t.lang | upper }}</a>
           {% endfor %}
         </span>
       {% endif %}
@@ -19,11 +27,11 @@
       </select>
     </div>
     <div class="nav-social">
-      {% for s in site.socials %}<a href="{{ s.link }}" target="_blank" rel="noreferrer">{{ s.title }}</a>{% endfor %}
+      {% for s in site.get('socials', []) %}<a href="{{ s.link }}" target="_blank" rel="noreferrer">{{ s.title }}</a>{% endfor %}
     </div>
   </div>
   <div class="nav-bottom">
-    {% for item in site.navs %}
+    {% for item in site.get('navs', []) %}
       {% if item.link.startswith('http') %}
         <a href="{{ item.link }}" target="_blank" rel="noreferrer">{{ item.title }}</a>
       {% else %}

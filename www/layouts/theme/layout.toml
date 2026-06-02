@@ -1,0 +1,3 @@
+name = "nkthanh-www"
+version = "0.1.0"
+default_template = "single.html.j2"

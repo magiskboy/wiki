@@ -1,21 +1,19 @@
-{% extends "base.html" %}
+{% extends "base.html.j2" %}
 {% block main %}
-{% set lp = page.locale_prefix | default('') %}
-{% set home = '/' if lp == '' else '/' + lp + '/' %}
 <article class="post">
   <div class="heading">
     <h1>{{ page.title }}</h1>
-    {% if page.date %}<span class="date">{{ format_date(page.date, page.locale | default('vi')) }}</span>{% endif %}
-    {% if page.description %}<p class="description">{{ page.description }}</p>{% endif %}
-    {% if page.tags %}
+    {% if page.get('date_display') %}<span class="date">{{ page.date_display }}</span>{% endif %}
+    {% if page.get('description_html') or page.get('description') %}<p class="description">{{ page.get('description_html') or page.description }}</p>{% endif %}
+    {% if page.get('tag_links') %}
       <ul class="tags">
-        {% for tag in page.tags %}<li><a href="{{ home }}tags/{{ tag }}/">{{ tag }}</a></li>{% endfor %}
+        {% for tag in page.tag_links %}<li><a href="{{ tag.url }}">{{ tag.name }}</a></li>{% endfor %}
       </ul>
     {% endif %}
   </div>
-  <div class="post-content">{{ content }}</div>
+  <div class="post-content">{{ content_html }}</div>
 </article>
-{% if site.utterances_repo %}
+{% if site.get('utterances_repo') %}
 <section class="comments">
   <script src="https://utteranc.es/client.js"
           repo="{{ site.utterances_repo }}"

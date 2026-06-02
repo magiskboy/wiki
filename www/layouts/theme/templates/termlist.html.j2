@@ -1,0 +1,10 @@
+{% extends "base.html.j2" %}
+{% block main %}
+<div class="post-list">
+  {% if page.get('is_tag') %}<h1>#{{ page.title }}</h1>{% else %}<h1>{{ page.title }}</h1>{% endif %}
+  {% for item in page.get('entries', []) %}
+    {% include "partials/postitem.html.j2" %}
+    {% if not loop.last %}<hr>{% endif %}
+  {% endfor %}
+</div>
+{% endblock %}
