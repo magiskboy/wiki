@@ -29,12 +29,13 @@ jobs:
           python-version: "3.13"
           enable-cache: true
 
-      # Install pyssg from git (it is git-install only), pinned to a released
-      # tag for reproducible builds. Bump this when upgrading pyssg.
-      - name: Install pyssg
+      # Dependencies (pyssg is git-install only, pinned tag + pymdown-extensions)
+      # live in www/requirements.txt so CI and local builds stay in sync. Bump
+      # the pyssg pin there when upgrading.
+      - name: Install dependencies
         run: |
           uv venv
-          uv pip install "pyssg[plugins] @ git+https://github.com/magiskboy/pyssg@v1.1.0" pymdown-extensions
+          uv pip install -r requirements.txt
 
       - name: Build site
         run: .venv/bin/pyssg build

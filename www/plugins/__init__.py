@@ -1,26 +1,34 @@
-"""Site-local pyssg plugins for the nkthanh.dev blog.
+"""Plugin riêng cho blog nkthanh.dev (pyssg 0.1.0, API node/registry).
 
-These customizations live with the site, not in the pyssg kernel:
-
-- ``TemplateHelpers`` -- a locale-aware ``format_date`` template global.
-- ``HighlightThemes`` -- ``data-theme``-scoped Pygments stylesheets.
-- ``Math`` -- flags pages using ``$$`` so the layout loads KaTeX.
-- ``Categories`` -- the ``/categories/`` index and per-category listing pages.
-- ``Tags`` -- the ``/tags/`` index (per-tag pages come from the preset).
+- ``WwwMarkdown``    -- markdown→HTML (thêm arithmatex cho công thức + cờ math,
+  tiền tính ngày & link tag theo locale).
+- ``WwwCollections`` -- danh sách bài viết phân trang theo locale (trang chủ).
+- ``WwwTaxonomy``    -- trang tag/category (chỉ mục + từng term) theo locale.
+- ``WwwRss``         -- feed RSS theo locale.
+- ``HighlightThemes``-- stylesheet Pygments scope theo ``data-theme``.
+- ``Redirects``      -- trang chuyển hướng tĩnh cho URL cũ.
+- ``StaticFiles``    -- copy ``static/`` ra gốc output.
 """
 
 from __future__ import annotations
 
-from .categories import Categories, Tags
-from .dates import TemplateHelpers, format_date
+from .collections import WwwCollections, www_collections
 from .highlighting import HighlightThemes
-from .math import Math
+from .markdown import WwwMarkdown, wwwmarkdown
+from .redirects import Redirects
+from .rss import WwwRss
+from .static_files import StaticFiles
+from .taxonomy import WwwTaxonomy, www_taxonomy
 
 __all__ = [
-    "Categories",
     "HighlightThemes",
-    "Math",
-    "Tags",
-    "TemplateHelpers",
-    "format_date",
+    "Redirects",
+    "StaticFiles",
+    "WwwCollections",
+    "WwwMarkdown",
+    "WwwRss",
+    "WwwTaxonomy",
+    "www_collections",
+    "www_taxonomy",
+    "wwwmarkdown",
 ]
