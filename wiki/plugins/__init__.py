@@ -1,25 +1,30 @@
-"""Site-local pyssg plugins cho Thanh's wiki.
+"""Plugin tùy biến cho Thanh's wiki (pyssg 0.1.0, API node/registry).
 
-Các tuỳ biến đặc thù của wiki sống cùng site, không nằm trong kernel pyssg:
-
-- ``WikiMeta``  -- tiêu đề lấy từ H1 đầu tiên + slug ASCII (bỏ dấu tiếng Việt)
-  cho URL ``/<slug>/``, và bỏ qua các file không build (``_tags``, ``Tổng quan``).
+- ``WikiMarkdown`` -- markdown→HTML (codehilite, arithmatex, mermaid, normalize)
+  thay 3 plugin built-in markdown/highlight/mermaid.
+- ``WikiSlug``     -- URL phẳng ``/slug/`` ASCII bỏ dấu (route tap).
+- ``WikiGraph``    -- đồ thị tri thức + ``link_counts`` + trang ``/graph/``.
+- ``WikiTaxonomy`` -- trang ``/tags/``, ``/categories/`` khớp layout wiki.
+- ``WikiHome``     -- dashboard trang chủ từ ``index.md``.
 """
 
 from __future__ import annotations
 
-from .content import WikiContent
-from .external import ExternalSources
-from .graph import WikiGraph, WikiGraphPage
-from .meta import WikiMeta, slugify
-from .taxonomy import WikiTaxonomy
+from .graph import WikiGraph, wiki_graph
+from .home import WikiHome, wiki_home
+from .markdown import WikiMarkdown, wiki_markdown
+from .slug import WikiSlug, wiki_slug
+from .taxonomy import WikiTaxonomy, wiki_taxonomy
 
 __all__ = [
-    "ExternalSources",
-    "WikiContent",
     "WikiGraph",
-    "WikiGraphPage",
-    "WikiMeta",
+    "WikiHome",
+    "WikiMarkdown",
+    "WikiSlug",
     "WikiTaxonomy",
-    "slugify",
+    "wiki_graph",
+    "wiki_home",
+    "wiki_markdown",
+    "wiki_slug",
+    "wiki_taxonomy",
 ]

@@ -1,0 +1,9 @@
+# Phụ thuộc build site (Python >= 3.13). Cài vào .venv ở gốc repo:
+#   uv pip install --python ../.venv/bin/python -r requirements.txt
+#
+# pyssg là static site generator (https://pyssg.nkthanh.dev), chỉ cài qua git;
+# pin tag v0.1.0 (API node/registry) — bản các plugin trong plugins/ nhắm tới.
+pyssg @ git+https://github.com/magiskboy/pyssg@v0.1.0
+# pymdownx.arithmatex: bảo vệ công thức LaTeX để KaTeX render client-side
+# (WikiMarkdown dùng); pyssg lõi không kéo theo gói này.
+pymdown-extensions>=10

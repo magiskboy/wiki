@@ -1,30 +1,29 @@
-"""Trang tổng hợp: tag, category và dashboard trang chủ.
+"""WikiTaxonomy: trang tag, category và dashboard trang chủ.
 
-``WikiTaxonomy`` (collect, sau ``WikiGraph`` để có ``link_counts``) tạo các
-synthetic source:
+Chạy ở ``evaluate_collections`` (sau WikiGraph để có ``link_counts``), tạo các
+trang ảo khớp layout wiki:
 
 - ``/tags/`` (tag cloud) + ``/tags/<tag>/`` (mỗi tag, xếp theo số liên kết)
 - ``/categories/`` (bản đồ) + ``/categories/<slug>/`` (mỗi category)
-- biến trang chủ ``/`` (từ ``_index``) thành dashboard: top bài + thẻ cat/tag.
 
-Theo pattern ``www/plugins/categories.py``: gán ``GENERATED``/``url``/``layout``,
-truyền dữ liệu qua ``source.meta`` để layout Jinja render.
+Category suy từ thư mục cha của bài (taxonomy built-in chỉ đọc frontmatter).
 """
 
 from __future__ import annotations
 
 from collections import defaultdict
 from pathlib import Path
+from typing import TYPE_CHECKING
 
-from pyssg.build import Build
-from pyssg.builder import Builder
-from pyssg.content import GENERATED, OUTPUT_PATH, URL, is_generated, url_to_output_path
-from pyssg.models import Source
+from pyssg.core.node import Document, Page
+from pyssg.core.types import NodeKind
 
-from .meta import slugify
+from ._util import ascii_slug
 
-TOP_N = 10
-# Sau WikiGraph (-100); trước render.
+if TYPE_CHECKING:
+    from pyssg.core.build import Build
+    from pyssg.core.builder import Builder
+
 _COLLECT_STAGE = 10
 
 
@@ -35,76 +34,98 @@ def _font_size_rem(count: int, c_min: int, c_max: int) -> float:
     return 0.85 + t * 1.4
 
 
-def _category_of(source: Source) -> str | None:
-    parts = source.relpath.parts
+def _slug_of(node: Document) -> str:
+    return ascii_slug(Path(node.source_path or "").stem)
+
+
+def _category_of(node: Document) -> str | None:
+    parts = Path(node.source_path or "").parts
     return parts[0] if len(parts) > 1 else None
 
 
 class WikiTaxonomy:
-    def apply(self, builder: Builder) -> None:
-        builder.hooks.collect.tap("WikiTaxonomy", self._collect, stage=_COLLECT_STAGE)
+    name = "wiki_taxonomy"
+    cache_version = "1.0.0"
 
-    def _content(self, build: Build) -> list[Source]:
-        out = []
-        for s in build.sources:
-            if is_generated(s) or s.meta.get("external_md"):
+    def apply(self, builder: Builder) -> None:
+        @builder.hooks.this_compilation.tap(self.name)
+        def _wire(build: Build) -> None:
+            @build.hooks.evaluate_collections.tap(self.name, stage=_COLLECT_STAGE)
+            def _eval(b: Build) -> None:
+                self._collect(b)
+
+    def _content(self, build: Build) -> list[Document]:
+        out: list[Document] = []
+        for node in build.graph.nodes():
+            if not (isinstance(node, Document) and node.kind is NodeKind.MARKDOWN):
                 continue
-            if s.relpath.stem == "_index":
+            if Path(node.source_path or "").stem == "index":
                 continue
-            out.append(s)
+            out.append(node)
         return out
 
+    def _link_counts(self, build: Build) -> dict[str, int]:
+        raw = build.site_data.get("link_counts")
+        return {str(k): int(v) for k, v in raw.items()} if isinstance(raw, dict) else {}
+
+    def _rank(self, docs: list[Document], link_counts: dict[str, int]) -> list[dict[str, object]]:
+        ordered = sorted(
+            docs,
+            key=lambda d: (
+                -link_counts.get(_slug_of(d), 0),
+                str(d.meta.get("title", "")).lower(),
+            ),
+        )
+        return [
+            {
+                "rank": i,
+                "title": d.meta.get("title", ""),
+                "url": f"/{_slug_of(d)}/",
+                "links": link_counts.get(_slug_of(d), 0),
+            }
+            for i, d in enumerate(ordered, start=1)
+        ]
+
+    def _add(self, build: Build, *, pid: str, url: str, template: str, meta: dict[str, object]) -> None:
+        build.graph.add_node(
+            Page(id=pid, kind=NodeKind.PAGE, url=url, template=template, meta=meta)
+        )
+
     def _collect(self, build: Build) -> None:
-        link_counts: dict[str, int] = build.meta.get("link_counts", {})  # type: ignore[assignment]
+        link_counts = self._link_counts(build)
         content = self._content(build)
 
-        by_tag: dict[str, list[Source]] = defaultdict(list)
-        by_cat: dict[str, list[Source]] = defaultdict(list)
-        for s in content:
-            raw_tags = s.frontmatter.get("tags") or []
+        by_tag: dict[str, list[Document]] = defaultdict(list)
+        by_cat: dict[str, list[Document]] = defaultdict(list)
+        for d in content:
+            raw_tags = d.meta.get("tags") or []
             for t in raw_tags if isinstance(raw_tags, list) else []:
-                by_tag[str(t)].append(s)
-            cat = _category_of(s)
+                by_tag[str(t)].append(d)
+            cat = _category_of(d)
             if cat:
-                by_cat[cat].append(s)
-
-        def rank(sources: list[Source]) -> list[dict[str, object]]:
-            ordered = sorted(
-                sources,
-                key=lambda s: (
-                    -link_counts.get(str(s.meta.get("slug")), 0),
-                    str(s.frontmatter.get("title", "")).lower(),
-                ),
-            )
-            return [
-                {
-                    "rank": i,
-                    "title": s.frontmatter.get("title", ""),
-                    "url": s.meta.get("url", ""),
-                    "links": link_counts.get(str(s.meta.get("slug")), 0),
-                }
-                for i, s in enumerate(ordered, start=1)
-            ]
+                by_cat[cat].append(d)
 
         # --- per-tag pages ---
-        for tag, sources in by_tag.items():
-            page = self._synth(build, url=f"/tags/{tag}/", layout="list.html",
-                               title=f"Tag: {tag}")
-            page.meta["label"] = tag
-            page.meta["count"] = len(sources)
-            page.meta["entries"] = rank(sources)
-            page.meta["map_url"] = "/tags/"
-            page.meta["map_label"] = "Bản đồ tag"
+        for tag, docs in by_tag.items():
+            self._add(
+                build,
+                pid=f"page:wiki:tag:{tag}",
+                url=f"/tags/{tag}/",
+                template="list.html.j2",
+                meta={
+                    "title": f"Tag: {tag}",
+                    "count": len(docs),
+                    "entries": self._rank(docs, link_counts),
+                    "map_url": "/tags/",
+                    "map_label": "Bản đồ tag",
+                },
+            )
 
-        # --- tag cloud /tags/ ---
+        # --- tag cloud ---
         tag_counts = {t: len(v) for t, v in by_tag.items()}
-        cloud = self._synth(build, url="/tags/", layout="tag-cloud.html", title="Tags")
-        cloud.meta["total"] = len(tag_counts)
-        if tag_counts:
-            c_min, c_max = min(tag_counts.values()), max(tag_counts.values())
-        else:
-            c_min = c_max = 0
-        cloud.meta["cloud"] = [
+        c_min = min(tag_counts.values()) if tag_counts else 0
+        c_max = max(tag_counts.values()) if tag_counts else 0
+        cloud = [
             {
                 "tag": t,
                 "count": c,
@@ -113,62 +134,43 @@ class WikiTaxonomy:
             }
             for t, c in sorted(tag_counts.items(), key=lambda x: (-x[1], x[0]))
         ]
+        self._add(
+            build,
+            pid="page:wiki:tagcloud",
+            url="/tags/",
+            template="tag-cloud.html.j2",
+            meta={"title": "Tags", "total": len(tag_counts), "cloud": cloud},
+        )
 
         # --- per-category pages ---
-        for name, sources in by_cat.items():
-            slug = slugify(name)
-            page = self._synth(build, url=f"/categories/{slug}/", layout="list.html",
-                               title=f"Category: {name}")
-            page.meta["label"] = name
-            page.meta["count"] = len(sources)
-            page.meta["entries"] = rank(sources)
-            page.meta["map_url"] = "/categories/"
-            page.meta["map_label"] = "Bản đồ category"
+        for name, docs in by_cat.items():
+            self._add(
+                build,
+                pid=f"page:wiki:cat:{ascii_slug(name)}",
+                url=f"/categories/{ascii_slug(name)}/",
+                template="list.html.j2",
+                meta={
+                    "title": f"Category: {name}",
+                    "count": len(docs),
+                    "entries": self._rank(docs, link_counts),
+                    "map_url": "/categories/",
+                    "map_label": "Bản đồ category",
+                },
+            )
 
-        # --- category map /categories/ ---
-        cat_counts = {c: len(v) for c, v in by_cat.items()}
-        cmap = self._synth(build, url="/categories/", layout="category-map.html",
-                          title="Bản đồ category")
-        cmap.meta["total"] = len(cat_counts)
-        cmap.meta["cards"] = [
-            {"name": name, "url": f"/categories/{slugify(name)}/", "count": c}
-            for name, c in sorted(cat_counts.items(), key=lambda x: (-x[1], x[0]))
-        ]
-
-        # --- home dashboard (trang chủ /) ---
-        self._build_home(build, content, by_tag, by_cat, link_counts, rank)
-
-    def _build_home(self, build, content, by_tag, by_cat, link_counts, rank) -> None:
-        home = next(
-            (s for s in build.sources if s.meta.get(URL) == "/"
-             and s.relpath.stem == "_index"),
-            None,
-        )
-        if home is None:
-            return
-        home.frontmatter["layout"] = "index.html"
-        home.frontmatter.setdefault("title", "Mục lục tri thức")
-        home.meta["top"] = rank(content)[:TOP_N]
-        home.meta["category_cards"] = [
-            {"name": name, "url": f"/categories/{slugify(name)}/", "count": len(v)}
+        # --- category map ---
+        cards = [
+            {"name": name, "url": f"/categories/{ascii_slug(name)}/", "count": len(v)}
             for name, v in sorted(by_cat.items(), key=lambda x: (-len(x[1]), x[0]))
         ]
-        home.meta["tag_cards"] = [
-            {"name": t, "url": f"/tags/{t}/", "count": len(v)}
-            for t, v in sorted(by_tag.items(), key=lambda x: (-len(x[1]), x[0]))
-        ]
-        home.meta["counts"] = {
-            "articles": len(content),
-            "categories": len(by_cat),
-            "tags": len(by_tag),
-        }
+        self._add(
+            build,
+            pid="page:wiki:catmap",
+            url="/categories/",
+            template="category-map.html.j2",
+            meta={"title": "Bản đồ category", "total": len(by_cat), "cards": cards},
+        )
 
-    def _synth(self, build: Build, *, url: str, layout: str, title: str) -> Source:
-        output_path = url_to_output_path(url)
-        source = Source(path=Path(output_path), relpath=Path(output_path))
-        source.frontmatter = {"title": title, "layout": layout}
-        source.meta[GENERATED] = True
-        source.meta[URL] = url
-        source.meta[OUTPUT_PATH] = output_path
-        build.sources.append(source)
-        return source
+
+def wiki_taxonomy() -> WikiTaxonomy:
+    return WikiTaxonomy()
