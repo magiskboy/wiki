@@ -1,0 +1,11 @@
+{% extends "base.html.j2" %}
+{% block main %}
+<div class="post-list">
+  {% if page.get('taxonomy') == 'tag' %}<h1>#{{ page.get('term') }}</h1>{% else %}<h1>{{ page.get('term') }}</h1>{% endif %}
+  <ul class="term-members">
+    {% for m in page.get('members', []) %}
+      <li><a href="{{ m.url }}">{{ m.title }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

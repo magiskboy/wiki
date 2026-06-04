@@ -1,15 +1,16 @@
 {% extends "base.html.j2" %}
 {% block main %}
 <div class="post-list">
-  {% for item in page.get('entries', []) %}
+  {% for item in page.get('items', []) %}
     {% include "partials/postitem.html.j2" %}
     {% if not loop.last %}<hr>{% endif %}
   {% endfor %}
-  {% if page.get('paginator') and page.paginator.total_pages > 1 %}
+  {% set p = page.get('pagination') %}
+  {% if p and p.total > 1 %}
     <nav class="pagination">
-      {% if page.paginator.prev_url %}<a href="{{ page.paginator.prev_url }}">« Trước</a>{% endif %}
-      <span>{{ page.paginator.number }} / {{ page.paginator.total_pages }}</span>
-      {% if page.paginator.next_url %}<a href="{{ page.paginator.next_url }}">Tiếp »</a>{% endif %}
+      {% if p.prev %}<a href="{{ p.prev }}">« Trước</a>{% endif %}
+      <span>{{ p.current }} / {{ p.total }}</span>
+      {% if p.next %}<a href="{{ p.next }}">Tiếp »</a>{% endif %}
     </nav>
   {% endif %}
 </div>
