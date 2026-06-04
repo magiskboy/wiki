@@ -1,8 +1,9 @@
 """Hàm thuần dùng chung cho các plugin của site (không phụ thuộc pyssg core).
 
-Gồm: định dạng ngày theo locale (tái hiện "Thứ X, ngày D tháng M năm Y" cho vi và
-"March 19, 2021" cho en), helper tiền tố URL theo locale, và bộ dựng "card" bài
-viết cho các trang danh sách (trang chủ, tag, category).
+pyssg 0.2.0 đã lo i18n cho collections/taxonomy/rss nên phần lớn helper định
+tuyến locale cũ không còn cần. Chỉ còn lại phần *tiền tính hiển thị* mà core
+không làm được vì ``render`` chưa expose seam đăng ký Jinja filter/global: định
+dạng ngày theo locale, render mô tả markdown, và link tag theo locale.
 """
 
 from __future__ import annotations
@@ -28,6 +29,7 @@ def render_description(text: object) -> str:
     if html.startswith("<p>") and html.endswith("</p>") and html.count("<p>") == 1:
         html = html[3:-4]
     return html
+
 
 _VI_DAYS = [
     "Chủ nhật",
@@ -71,22 +73,17 @@ def format_date(value: object, locale: str = "vi") -> str:
     )
 
 
-def base_path(locale: str, default_locale: str) -> str:
-    """Tiền tố URL của một locale: "/" cho locale mặc định, "/<locale>/" còn lại."""
-    return "/" if locale == default_locale else f"/{locale}/"
-
-
-def locale_prefix(locale: str, default_locale: str) -> str:
-    """Phần segment locale trong URL: "" cho mặc định, "<locale>" còn lại."""
-    return "" if locale == default_locale else locale
-
-
 def _as_str_list(value: object) -> list[str]:
     if isinstance(value, str):
         return [value]
-    if isinstance(value, list):
+    if isinstance(value, (list, tuple)):
         return [str(v) for v in value]
     return []
+
+
+def base_path(locale: str, default_locale: str) -> str:
+    """Tiền tố URL của một locale: "/" cho locale mặc định, "/<locale>/" còn lại."""
+    return "/" if locale == default_locale else f"/{locale}/"
 
 
 def tag_links(tags: object, locale: str, default_locale: str) -> list[dict[str, str]]:
@@ -96,24 +93,3 @@ def tag_links(tags: object, locale: str, default_locale: str) -> list[dict[str, 
         {"name": tag, "url": f"{base}tags/{slugify(tag)}/"}
         for tag in _as_str_list(tags)
     ]
-
-
-def post_card(meta: dict[str, object], url: str, locale: str, default_locale: str) -> dict[str, object]:
-    """Dữ liệu một bài viết để hiển thị trong danh sách (postitem)."""
-    description = meta.get("description") or meta.get("excerpt") or ""
-    return {
-        "url": url,
-        "title": str(meta.get("title") or url),
-        "date": meta.get("date"),
-        "date_display": format_date(meta.get("date"), locale),
-        "description": render_description(description),
-        "tags": _as_str_list(meta.get("tags")),
-        "tag_links": tag_links(meta.get("tags"), locale, default_locale),
-    }
-
-
-def date_sort_key(meta: dict[str, object]) -> str:
-    value = meta.get("date")
-    if isinstance(value, (date, datetime)):
-        return value.isoformat()
-    return str(value) if value is not None else ""

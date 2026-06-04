@@ -2,8 +2,9 @@
 #   uv venv && uv pip install -r requirements.txt
 #
 # pyssg là static site generator (https://pyssg.nkthanh.dev), chỉ cài qua git;
-# pin tag v0.1.0 (API node/registry) — bản các plugin trong plugins/ nhắm tới.
-pyssg @ git+https://github.com/magiskboy/pyssg@v0.1.0
-# pymdownx.arithmatex: bảo vệ công thức LaTeX để KaTeX render client-side
-# (WwwMarkdown dùng); pyssg lõi không kéo theo gói này.
+# pin tag v0.2.0 (collections/taxonomy/rss i18n-aware, markdown(extensions=...),
+# redirects + asset_copy mounts built-in).
+pyssg @ git+https://github.com/magiskboy/pyssg@v0.2.0
+# pymdownx.arithmatex: bảo vệ công thức LaTeX để KaTeX render client-side;
+# truyền vào markdown(extensions=[...]). pyssg lõi không kéo theo gói này.
 pymdown-extensions>=10

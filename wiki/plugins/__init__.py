@@ -1,10 +1,16 @@
-"""Plugin tùy biến cho Thanh's wiki (pyssg 0.1.0, API node/registry).
+"""Plugin tùy biến cho Thanh's wiki (pyssg 0.2.0, API node/registry).
 
-- ``WikiMarkdown`` -- markdown→HTML (codehilite, arithmatex, mermaid, normalize)
-  thay 3 plugin built-in markdown/highlight/mermaid.
+Đây là tính năng *bespoke* nên 0.2.0 không cấu hình-hoá thay được:
+
+- ``WikiMarkdown`` -- markdown→HTML (codehilite giữ class CSS sẵn có, arithmatex,
+  mermaid→div tiền-markdown để không xung đột codehilite, normalize HTML,
+  rewrite link repo → GitHub/GitLab). Built-in ``mermaid()`` không dùng được ở
+  đây vì codehilite "nuốt" fence mermaid trước.
 - ``WikiSlug``     -- URL phẳng ``/slug/`` ASCII bỏ dấu (route tap).
-- ``WikiGraph``    -- đồ thị tri thức + ``link_counts`` + trang ``/graph/``.
-- ``WikiTaxonomy`` -- trang ``/tags/``, ``/categories/`` khớp layout wiki.
+- ``WikiGraph``    -- đồ thị tri thức từ mục "Liên kết tri thức" + ``link_counts``
+  + trang ``/graph/`` (khác mô hình link của contrib ``graph()``).
+- ``WikiTaxonomy`` -- ``/tags/``, ``/categories/`` (category theo thư mục cha,
+  xếp hạng theo ``link_counts``, tag-cloud) — built-in chỉ đọc frontmatter.
 - ``WikiHome``     -- dashboard trang chủ từ ``index.md``.
 """
 
