@@ -33,7 +33,7 @@ Hiện tại, giới nghiên cứu xác định 2 loại chuyển giao nhận th
 Khi công việc hoặc nhiệm vụ đòi hỏi một trình độ nhất định để nhận thức mà anh ta không đủ kiến thức, kinh nghiệm - năng lực nội tại, anh ta phải chuyển công việc nhận thức đó ra bên ngoài, có thể là dùng AI, máy tính, tra Google.
 Hoặc để nhìn ra bức hình bị xoay ngang, bộ óc anh ta không có khả năng tưởng tượng ra bức hình gốc, anh ta buộc phải xoay đầu để đưa hình ảnh đó về dạng bình thường, nơi mà mẫu có sẵn trong kinh nghiệm của anh ta có thể nhận ra.
 
-Chuyển giao nhận thức khi những đánh giá của siêu nhận thức nên năng lực nội tại sai.
+### Chuyển giao nhận thức khi những đánh giá của siêu nhận thức nên năng lực nội tại sai.
 Siêu nhận thức hay metacognition là khả năng đánh giá lên  cách con người nhận thức, cái gì biết / chưa biết, điểm mạnh trong tư duy ở đâu,.... Khả năng này có thể nói là "suy nghĩ về suy nghĩ" của con người.
 Việc anh ta đánh giá sai khả năng nhận thức của bản thân có thể khiến anh quyết định chuyển giao nhận thức thay vì tự thực hiện nhận thức một vấn đề nào đó. Cái này ta có thể gọi là "biết mình biết người".
 
@@ -60,7 +60,7 @@ Tầng siêu nhận thức điều khiển nhận thức rằng anh ta có đang
 Việc lạm dụng chuyển giao nhận thức sẽ gây rối loạn mô hình này.
 
 **Đối với nhận thức cấp thấp**, chuyển giao nhận thức có điểm lợi trong việc giúp con người đạt được mục tiêu với chi phí thấp về mặt trí óc, giúp giải phóng khối lượng công việc để tập trung vào các công việc bậc cao khác. Tuy nhiên, nếu con người lạm dụng việc này, con người vô tình thiếu đi cơ hội "friction", cơ hội hiểu bản chất, quá trình,... khi thực hiện hành vi nhận thức -> làm giảm năng lực nội tại. Điều này kích hoạt 1 vòng lặp vô cùng nguy hiểm:
-Chuyển giao nhận thức -> Giảm năng lực nội tại -> Kích hoạt chuyển giao nhận thức
+Chuyển giao nhận thức -> Giảm năng lực nội tại -> Siêu nhận thức đánh giá thấp nhận thức --> Kích hoạt chuyển giao nhận thức
 -> ....
 
 **Đối với siêu nhận thức**, điều này có thể đi theo 2 hướng:
