@@ -22,8 +22,23 @@
               "icon": "lucide-file",
               "title": "cognitive-offloading"
             }
+          },
+          {
+            "id": "d57b223d41f0fdfd",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "www/content/vi/posts/xay-dung-khung-danh-gia-chat-luong-va-nang-suat-trong-phat-trien-phan-mem.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "xay-dung-khung-danh-gia-chat-luong-va-nang-suat-trong-phat-trien-phan-mem"
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -194,8 +209,9 @@
       "obsidian-excalidraw-plugin:New drawing": false
     }
   },
-  "active": "6a42c198813d08f7",
+  "active": "d57b223d41f0fdfd",
   "lastOpenFiles": [
+    "www/content/vi/posts/cognitive-offloading.md",
     "www/content/vi/posts/xay-dung-khung-danh-gia-chat-luong-va-nang-suat-trong-phat-trien-phan-mem.md.md",
     "www/public/posts/xay-dung-khung-danh-gia-chat-luong-va-nang-suat-trong-phat-trien-phan-mem/index.html",
     "www/public/posts/xay-dung-khung-danh-gia-chat-luong-va-nang-suat-trong-phat-trien-phan-mem",
@@ -207,7 +223,6 @@
     "www/public/posts/Xây dựng khung đánh giá chất lượng và năng suất trong phát triển phần mềm",
     "www/public/page/5/index.html",
     "www/public/page/5",
-    "www/content/vi/posts/cognitive-offloading.md",
     "www/public/tags/web/index.html",
     "www/public/tags/vi/index.html",
     "www/public/images/subroutine_coroutine.png",
