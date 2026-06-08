@@ -43,7 +43,12 @@ from pyssg.plugins import (
 
 # Config được import theo đường dẫn nên thư mục của nó chưa nằm trên sys.path.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from plugins import HighlightThemes, WwwCollections, WwwEnrich  # noqa: E402
+from plugins import (  # noqa: E402
+    HighlightThemes,
+    ObsidianImages,
+    WwwCollections,
+    WwwEnrich,
+)
 
 DEFAULT_LOCALE = "vi"
 LOCALES = ("vi", "en")
@@ -108,6 +113,9 @@ config = Config(
         markdown(extensions=[ArithmatexExtension(generic=True, smart_dollar=True)]),
         highlight(style="default"),
         content_meta(),
+        # Ảnh kiểu Obsidian (![[...]] và src tên-trần) -> URL thật; cùng mount
+        # với asset_copy bên dưới (static -> /).
+        ObsidianImages(mounts=(("static", "/"),)),
         WwwEnrich(default_locale=DEFAULT_LOCALE),
         HighlightThemes(),
         permalink(),

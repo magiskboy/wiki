@@ -14,10 +14,13 @@ from __future__ import annotations
 
 from .enrich import WwwCollections, WwwEnrich, www_enrich
 from .highlighting import HighlightThemes
+from .obsidian_images import ObsidianImages, obsidian_images
 
 __all__ = [
     "HighlightThemes",
+    "ObsidianImages",
     "WwwCollections",
     "WwwEnrich",
+    "obsidian_images",
     "www_enrich",
 ]

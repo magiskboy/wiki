@@ -89,7 +89,7 @@ hr { margin: 1.5rem 0; border: none; border-top: 1px solid var(--hr-color); }
 .post-item .tags li { font-weight: 300; font-size: .8rem; margin-right: .5rem; }
 
 /* Post -------------------------------------------------------------------- */
-.post { text-align: justify; }
+.post { text-align: left; }
 .post .heading { margin-bottom: 2rem; }
 .post .heading h1 { margin-bottom: 0; text-align: left; }
 .post .heading .date { font-size: .9rem; font-style: italic; color: var(--post-info-color); }
@@ -102,6 +102,7 @@ hr { margin: 1.5rem 0; border: none; border-top: 1px solid var(--hr-color); }
 
 /* Content elements -------------------------------------------------------- */
 .post-content img, figure img { max-width: 100%; height: auto; }
+.post-content img { display: block; margin-inline: auto; }
 figure { margin: 1.5rem 0; text-align: center; }
 figcaption { color: var(--post-info-color); font-size: .85rem; margin-top: .4rem; }
 
