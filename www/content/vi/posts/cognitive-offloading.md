@@ -1,6 +1,7 @@
 ---
 title: Cognitive offloading
 date: 2026-06-07
+description: Cognitive offloading hay giảm tải nhận thức là hành động sử dụng cơ thể hay công cụ bên ngoài để giảm bớt gánh nặng xử lý thông tin. Tuy mang lợi ích, lạm dụng nó có thể kích hoạt một vòng lặp nguy hiểm trong thời đại AI bùng nổ.
 tags:
   - ai
   - experience
