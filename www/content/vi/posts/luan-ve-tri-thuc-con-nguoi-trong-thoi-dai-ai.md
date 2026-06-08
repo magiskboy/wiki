@@ -1,6 +1,10 @@
 ---
 title: Luận về tri thức con người trong thời đại AI
-date: "2026-06-05T10:10:17+07:00"
+date: 2026-06-05T10:10:17+07:00
+tags:
+  - ai
+  - experience
+  - mindset
 ---
 
 Mối nguy sâu nhất mà trí tuệ nhân tạo đặt ra cho con người không phải là việc nó nói sai, cũng không phải là việc nó cướp đi công ăn việc làm. Đó là những lo ngại bề mặt, dễ thấy và vì dễ thấy nên rồi sẽ được xử lý. Mối nguy thật sự âm thầm hơn nhiều: AI có khả năng làm teo dần chính những năng lực mà nhờ đó con người trở nên có khả năng tư duy. Bốn năng lực đang chịu sức ép trực tiếp là khả năng tập trung, khả năng học, khả năng tổng hợp và đúc kết, và khả năng kết nối thực chất giữa người với người. Điều trớ trêu là cả bốn đều bị xói mòn không phải qua một cú đánh, mà qua vô số hành vi nhỏ, tiện lợi và có vẻ vô hại — mỗi lần ta để máy nghĩ thay vì tự nghĩ.
