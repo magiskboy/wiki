@@ -52,7 +52,7 @@ Ví dụ: tốc độ (Speed) luôn phải đi kèm chất lượng (Change Fail
 
 > **Quy tắc:** nếu một chỉ số không có cặp đối trọng tự nhiên, nó chưa đủ an toàn để lên dashboard.
 
-### Nguyên lý 4 — Ba tầng thu thập, và khoảng cách cảm-nhận–thực-tế
+### Nguyên lý 4 — Ba tầng thu thập dữ liệu và khoảng cách cảm nhận thực tế
 
 Mọi chỉ số rơi vào một trong ba tầng thu thập:
 
@@ -70,7 +70,7 @@ Mọi chỉ số rơi vào một trong ba tầng thu thập:
 - outcome càng khách quan thì càng dễ
 - đóng góp càng nằm ở _thượng nguồn_ (gần với khách hàng) và càng _khuếch tán_ thì càng khó quy kết.
 
-### 1. Customer Support — vai trò dễ đo nhất
+### 1. Customer Support
 
 Với vị trí này, hệ thống ticket tự động ghi lại gần như mọi thứ, và chỉ số gắn trực tiếp với một outcome khách quan: khách có hài lòng không.
 

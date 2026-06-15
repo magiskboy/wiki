@@ -1,0 +1,23 @@
+Dạo này tôi dùng AI khá nhiều. Nói thật, tôi không thuộc nhóm người bi quan về AI — ngược lại là đằng khác. Tôi thấy rằng đây là một trong những công cụ hữu ích nhất mình từng được chạm tay vào. Có những việc trước đây phải dành cả buổi tối để đọc, để lục tìm tài liệu rồi tự ngồi tổng hợp lại từng chút một, giờ chỉ mất vài phút. Có những chủ đề tôi từng ngại tiếp cận vì quá rộng, hoặc quá khó, giờ chỉ cần ngồi xuống và bắt đầu một cuộc trò chuyện. Mọi thứ dần trở nên dễ dàng hơn rất nhiều.
+
+Và nếu thành thật với chính mình, tôi phải thừa nhận: tôi thích điều đó. Càng dùng, tôi càng thấy mình đang trở nên tiến bộ và thông minh hơn. Tôi hoàn thành công việc nhanh hơn, tiếp cận thông tin nhanh hơn, có nhiều ý tưởng hơn, nhiều câu trả lời hơn, nhiều góc nhìn hơn và đa năng hơn. Có những ngày, tôi cảm giác như cả thế giới này thu lại chỉ còn là những câu hỏi, miễn là tôi biết viết chúng cho đúng cách.
+
+AI dần trở thành phóng viên của tôi, nhân viên của tôi, người thầy của tôi, người bạn và cả người tri kỉ của tôi. Tôi không còn nhớ lần cuối mình tự ngồi nghĩ một vấn đề từ đầu đến cuối là khi nào. Mà cũng chẳng sao, vì mọi câu trả lời đều ở đó, ngay đầu ngón tay.
+
+Rồi một hôm, mọi chuyện bỗng trở nên quá đơn giản. Quá dễ dàng. Quá nhàm chán. Tôi mở AI lên, nhưng lần này không hỏi về công việc, không hỏi về công nghệ, không hỏi về triết học. Tôi chỉ gõ một dòng: "Bạn là một nghệ sĩ hài. Hãy kể cho tôi một câu chuyện nào đó thú vị." AI cười, rồi bắt đầu kể.
+
+Ở một thành phố nọ, có hai người công nhân. Một người dùng xẻng, một người lái máy xúc. Người dùng xẻng, mỗi ngày đào được một cái hố. Người lái máy xúc, mỗi ngày đào được một trăm cái. Chuyện chỉ có vậy. Lẽ ra chuyện chỉ nên có vậy.
+
+Nhưng chẳng mấy chốc, cả thành phố kéo đến. Ban đầu họ chỉ đứng xem, rồi có người rút điện thoại ra quay. Có người mở hẳn một kênh chuyên chia sẻ về "tư duy đào hố". Có người làm podcast về "cuộc cách mạng đào hố". Có người tổ chức hội thảo "Làm sao để đào hố hiệu quả trong kỷ nguyên mới". Có người viết sách "Cách suy nghĩ của những người đào được 100 cái hố mỗi ngày". Có người mở khóa học "Làm chủ tương lai ngành đào hố trong 7 ngày".
+
+Rồi đến một lúc, có những người không còn đào hố nữa. Họ chỉ đi dạy người khác cách đào hố. Ngày càng nhiều người kiếm sống bằng việc nói về đào hố, và ngày càng ít người thật sự cầm xẻng mà đào. Cả thành phố bị ám ảnh bởi những con số: một cái hố, mười cái hố, một trăm cái hố, một nghìn cái hố.
+
+Mỗi tuần lại có một diễn giả mới bước lên sân khấu. Người này dõng dạc tuyên bố người dùng xẻng sẽ tuyệt chủng trong ba năm tới. Người kia quả quyết năm năm nữa mọi cái hố trên thế giới sẽ được đào bằng máy. Người khác bán bản tin cao cấp "Mười xu hướng đào hố mà bạn tuyệt đối không thể bỏ lỡ". Và không ai trong số họ, suốt nhiều tháng trời, thật sự đào lấy một cái hố.
+
+Rồi một hôm, giữa một hội thảo đông nghịt người, có một đứa trẻ rụt rè giơ tay. Nó hỏi: "Cho con hỏi, chú lái máy xúc liệu có thật sự đào giỏi hơn chú dùng xẻng không ạ?" Cả khán phòng chết lặng. Một giây. Hai giây. Rồi không ai bảo ai, mọi người đồng loạt đứng dậy vỗ tay. Người dẫn chương trình bước lên sân khấu, mắt rưng rưng, giọng run run xúc động: "Thưa quý vị, đây là một câu hỏi vô cùng sâu sắc."
+
+Thế là người ta mở thêm hội thảo, thêm tọa đàm, thêm podcast, thêm vài chục bài viết phân tích chuyên sâu. Cả thành phố say mê cuộc tranh luận ấy như chưa từng say mê điều gì. Liệu người lái máy xúc có thật sự đào giỏi hơn? Liệu kỹ năng đào đất của con người còn quan trọng nữa không? Liệu tương lai có còn chỗ cho người cầm xẻng? Cuộc tranh luận kéo dài hết tháng này sang tháng khác. Người ta tranh cãi về cái hố, nhưng tuyệt nhiên không một ai bước xuống mà nhìn vào trong hố.
+
+Rồi một ngày, người lái máy xúc, giữa lúc cả thành phố còn đang mải tranh luận xem anh ta giỏi đến đâu, vô tình húc đổ cả một căn nhà. Cả thành phố nổi giận. Họ đòi xử phạt, đòi anh ta phải chịu trách nhiệm. Họ vây kín lấy anh, hỏi cho bằng được: "Anh đã làm gì thế này?!" Người công nhân đứng giữa đám đông, khoanh tay, bình thản nhìn căn nhà đổ nát. Rồi anh ta nhún vai, nói nhẹ tênh: "Không phải lỗi của tôi. Tại cái máy."
+
+AI kể xong. Tôi bật cười. Một câu chuyện hay thật, sâu sắc thật. Tôi đọc lại lần nữa, gật gù. Rồi tôi gõ tiếp: "Hay quá. Bạn viết lại giúp tôi cho ngắn gọn hơn, làm caption cho một video reel nhé. À, thêm cho tôi vài cái hashtag đang trend về AI nữa." AI cười, rồi bắt đầu viết. Màn hình tối dần. Chỉ còn lại tiếng gõ phím đều đều.
