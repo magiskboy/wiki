@@ -1,12 +1,13 @@
 # WWW
 
 Code for [nkthanh.dev](https://nkthanh.dev), migrated from Next.js/MDX to
-[pyssg](https://github.com/magiskboy/pyssg).
+[Cogito Publish](https://github.com/CogitoForge-AI/cogito-publish).
 
 ## Prerequisites
 
 - Python >= 3.13
-- Dependencies pinned in `requirements.txt` (pyssg `v0.1.0` + pymdown-extensions):
+- Dependencies pinned in `requirements.txt` (Cogito Publish `v0.1.0` wheel +
+  `pymdown-extensions`):
 
 ```bash
 $ uv venv && uv pip install -r requirements.txt
@@ -17,13 +18,13 @@ $ uv venv && uv pip install -r requirements.txt
 Build the site (output goes to `public/`):
 
 ```bash
-$ pyssg build
+$ cogito-publish build
 ```
 
 Run the live-reload dev server:
 
 ```bash
-$ pyssg serve
+$ cogito-publish serve
 ```
 
 ## Layout
@@ -57,6 +58,14 @@ Site options live in `pyssg.config.py` (`Config.site`):
 
 The default locale (`vi`) renders at the site root; other locales keep a
 `/<locale>/` prefix.
+
+## Deployment
+
+The site deploys to GitHub Pages from the `public/` build output. Custom-domain
+artifacts live in `static/` so they are copied to the site root on build:
+
+- `static/CNAME` -> `public/CNAME` (`www.nkthanh.dev`)
+- `static/.nojekyll` -> `public/.nojekyll`
 
 ## License
 

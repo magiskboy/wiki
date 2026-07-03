@@ -1,9 +1,9 @@
-"""Cấu hình pyssg cho blog nkthanh.dev (pyssg 0.2.0, API node/registry).
+"""Cấu hình pyssg cho blog nkthanh.dev (Cogito Publish v0.1.0).
 
 Blog đa ngôn ngữ: tiếng Việt (mặc định) ở gốc, tiếng Anh dưới ``/en/``. Bài viết
 nằm ở ``content/<locale>/posts/*.md``.
 
-0.2.0 lo phần lớn bằng plugin built-in:
+Phiên bản hiện tại lo phần lớn bằng plugin built-in:
 
 - ``markdown(extensions=[arithmatex])`` -- bộ extension không còn đóng cứng.
 - ``collections`` / ``taxonomy`` / ``rss`` -- đều i18n-aware (sinh trang theo
@@ -40,6 +40,7 @@ from pyssg.plugins import (
     sitemap,
     taxonomy,
 )
+from pyssg.contrib.llms import llms
 
 # Config được import theo đường dẫn nên thư mục của nó chưa nằm trên sys.path.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -96,7 +97,7 @@ config = Config(
     content_dir="content",
     output_dir="public",
     layout="layouts/theme",
-    base_url="https://nkthanh.dev",
+    base_url="https://www.nkthanh.dev",
     site={
         "title": "Nguyễn Khắc Thành",
         "description": "Nguyễn Khắc Thành",
@@ -122,6 +123,7 @@ config = Config(
         WwwCollections(POSTS, default_locale=DEFAULT_LOCALE),
         taxonomy(),
         rss(),
+        llms(markdown_pages=True),
         redirects(rules=LEGACY_REDIRECTS),
         sitemap(),
         asset_copy(mounts=[("static", "/")]),
