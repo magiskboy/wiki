@@ -3,7 +3,7 @@
 #
 # Cogito Publish hiện vẫn dùng import namespace `pyssg`, nhưng CLI được đổi sang
 # `cogito-publish`. Pin trực tiếp vào wheel phát hành để local/CI dùng cùng bản.
-pyssg @ https://github.com/CogitoForge-AI/cogito-publish/releases/download/v0.1.0/pyssg-0.1.0-py3-none-any.whl
+pyssg @ https://github.com/CogitoForge-AI/cogito-publish/releases/download/v0.1.1/pyssg-0.1.1-py3-none-any.whl
 # pymdownx.arithmatex: bảo vệ công thức LaTeX để KaTeX render client-side;
 # truyền vào markdown(extensions=[...]). pyssg lõi không kéo theo gói này.
 pymdown-extensions>=10
