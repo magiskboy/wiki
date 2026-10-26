@@ -8,13 +8,13 @@ categories:
   - AI
 author: "Nguyễn Khắc Thành"
 description: |
-AI đang giúp chúng ta viết code nhanh hơn bao giờ hết. Nhưng liệu tốc độ có phải là lý do để các kỹ sư phần mềm ngừng hiểu những gì mình xây dựng?
-
-Tôi cho rằng việc xem code do AI sinh ra như một black box là một sự đánh đổi nguy hiểm. Compiler và AI tạo sinh không hoạt động theo cùng một cơ chế. Viết được code không đồng nghĩa với việc tạo ra phần mềm đáng tin cậy, và sử dụng AI không có nghĩa là chúng ta có thể chuyển giao trách nhiệm nghề nghiệp cho nó.
-
-Tôi viết bài này để phân tích 4 góc nhìn: bản chất của AI, tư duy hệ thống, rủi ro tích lũy và trách nhiệm của người kỹ sư.
-
-AI nên khuếch đại năng lực của kỹ sư phần mềm, không phải trở thành cái cớ để chúng ta ngừng tư duy.
+  AI đang giúp chúng ta viết code nhanh hơn bao giờ hết. Nhưng liệu tốc độ có phải là lý do để các kỹ sư phần mềm ngừng hiểu những gì mình xây dựng?
+  
+  Tôi cho rằng việc xem code do AI sinh ra như một black box là một sự đánh đổi nguy hiểm. Compiler và AI tạo sinh không hoạt động theo cùng một cơ chế. Viết được code không đồng nghĩa với việc tạo ra phần mềm đáng tin cậy, và sử dụng AI không có nghĩa là chúng ta có thể chuyển giao trách nhiệm nghề nghiệp cho nó.
+  
+  Tôi viết bài này để phân tích 4 góc nhìn: bản chất của AI, tư duy hệ thống, rủi ro tích lũy và trách nhiệm của người kỹ sư.
+  
+  AI nên khuếch đại năng lực của kỹ sư phần mềm, không phải trở thành cái cớ để chúng ta ngừng tư duy.
 ---
 
 AI không biến code thành một black box. Chỉ có kỹ sư phần mềm mới đang lựa chọn đối xử với nó như vậy.
